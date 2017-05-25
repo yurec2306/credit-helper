@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import dataBase.AccountDAO;
+import main.MainWindow;
 import main.accounts.AccountModel;
 import main.registration.RegistrationController;
 
@@ -36,7 +37,8 @@ public class LoginController {
 						if(checkAccountData(window.tfLogin.getText(), window.pfPassword.getPassword())) {
 							window.setVisible(false);
 							window.dispose();
-							//go to main menu
+							MainWindow mainWindow = new MainWindow(model);
+							mainWindow.setVisible(true);
 						} else {
 							window.tfLogin.setText("");
 							window.pfPassword.setText("");
