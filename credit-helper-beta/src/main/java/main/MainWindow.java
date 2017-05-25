@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.*;
 
+import creditHelper.Step1Controller;
 import main.accounts.AccountModel;
 import main.accounts.AccountModel.UserType;
 
@@ -52,9 +53,11 @@ public class MainWindow extends JFrame {
 		JButton btnNewCredit = new JButton("\u041E\u0446\u0456\u043D\u043A\u0430 \u043A\u0440\u0435\u0434\u0438\u0442\u043E\u0441\u043F\u0440\u043E\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0456");
 		btnNewCredit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// open credit menu
+				Step1Controller step1 = new Step1Controller();
+				step1.init();
 			}
 		});
+
 		
 		JButton btnLegalsScore = new JButton("\u0420\u0435\u0439\u0442\u0438\u043D\u0433 \u043F\u0456\u0434\u043F\u0440\u0438\u0454\u043C\u0441\u0442\u0432");
 		btnLegalsScore.addActionListener(new ActionListener() {
