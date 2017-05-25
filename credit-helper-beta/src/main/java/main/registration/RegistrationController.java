@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import dataBase.AccountDAO;
+import main.ErrorWindow;
 import main.accounts.AccountModel;
 import main.accounts.AccountModel.UserType;
 
@@ -36,8 +37,8 @@ public class RegistrationController {
 							}
 							window.setVisible(false);
 							window.dispose();
-							
-							// success window
+							ErrorWindow success = new ErrorWindow("Регістрація пройшла успішно. Вітаємо у системі");
+							success.setVisible(true);
 						}
 					}
 				});
