@@ -9,6 +9,8 @@ import creditHelper.Step1Controller;
 import main.accounts.AccountModel;
 import main.accounts.AccountModel.UserType;
 import main.accounts.AccountsListController;
+import main.rates.IndividualRates;
+import main.rates.LegalRates;
 
 public class MainWindow extends JFrame {
 	
@@ -58,19 +60,20 @@ public class MainWindow extends JFrame {
 				step1.init();
 			}
 		});
-
 		
 		JButton btnLegalsScore = new JButton("\u0420\u0435\u0439\u0442\u0438\u043D\u0433 \u043F\u0456\u0434\u043F\u0440\u0438\u0454\u043C\u0441\u0442\u0432");
 		btnLegalsScore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// open legal rates
+				LegalRates frame = new LegalRates();
+				frame.setVisible(true);
 			}
 		});
 		
 		JButton btnIndividualsScore = new JButton("\u0420\u0435\u0439\u0442\u0438\u043D\u0433 \u0444\u0456\u0437\u0438\u0447\u043D\u0438\u0445 \u043E\u0441\u0456\u0431");
 		btnIndividualsScore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// open individual rates
+				IndividualRates frame = new IndividualRates();
+				frame.setVisible(true);
 			}
 		});
 		
