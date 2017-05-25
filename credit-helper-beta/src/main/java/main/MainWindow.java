@@ -8,6 +8,7 @@ import javax.swing.GroupLayout.*;
 import creditHelper.Step1Controller;
 import main.accounts.AccountModel;
 import main.accounts.AccountModel.UserType;
+import main.accounts.AccountsListController;
 
 public class MainWindow extends JFrame {
 	
@@ -100,7 +101,8 @@ public class MainWindow extends JFrame {
 		JButton btnAccounts = new JButton("\u0420\u0430\u0431\u043E\u0442\u0430 \u0437 \u0430\u043A\u0430\u0443\u043D\u0442\u0430\u043C\u0438 \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456");
 		btnAccounts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// open all accounts list
+				AccountsListController alc = new AccountsListController();
+				alc.init();
 			}
 		});
 		
