@@ -1,28 +1,29 @@
 package main.profileControl;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IndividualProfileWindow extends JFrame {
+public class LegalProfileWindow extends JFrame {
 	
-	private static Logger logger = LoggerFactory.getLogger(IndividualProfileWindow.class);
-
-	private static final long serialVersionUID = 4629428961649721253L;
+	private static Logger logger = LoggerFactory.getLogger(LegalProfileWindow.class);
+	
+	private static final long serialVersionUID = 5369476482293989580L;
 	
 	JLabel lblNewLabel;
 	JLabel lblNewLabel_1;
@@ -36,13 +37,18 @@ public class IndividualProfileWindow extends JFrame {
 	JLabel lblNewLabel_9;
 	JLabel lblNewLabel_10;
 	JLabel lblNewLabel_11;
+	JLabel lblNewLabel_13;
+	JLabel lblNewLabel_14;
+	JLabel lblNewLabel_15;
+	JLabel lblNewLabel_16;
+	JLabel lblNewLabel_17;
 	JTable table;
 	JButton btnSave;
 
-	public IndividualProfileWindow() {
-		logger.trace("Calling IndividualProfileWindow()");
+	public LegalProfileWindow() {
+		logger.trace("Calling LegalProfileWindow()");
 		
-		setBounds(100, 100, 450, 400);
+		setBounds(100, 100, 450, 485);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		JLabel label = new JLabel(
@@ -54,82 +60,82 @@ public class IndividualProfileWindow extends JFrame {
 		JPanel pCenter = new JPanel();
 
 		JScrollPane scrollPane = new JScrollPane(pCenter);
-		pCenter.setLayout(new GridLayout(15, 2));
+		pCenter.setLayout(new GridLayout(18, 2));
 
-		JLabel lblLastName = new JLabel("\u041F\u0440\u0456\u0437\u0432\u0438\u0449\u0435");
-		pCenter.add(lblLastName);
+		JLabel lblName = new JLabel("\u041D\u0430\u0437\u0432\u0430 \u043E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0446\u0456\u0457");
+		pCenter.add(lblName);
 
 		this.lblNewLabel = new JLabel();
 		pCenter.add(this.lblNewLabel);
 
-		JLabel lblFirstName = new JLabel("\u0406\u043C'\u044F");
-		pCenter.add(lblFirstName);
+		JLabel lblIPN = new JLabel("\u0406\u041F\u041D \u043E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0446\u0456\u0457");
+		pCenter.add(lblIPN);
 
 		this.lblNewLabel_1 = new JLabel();
 		pCenter.add(this.lblNewLabel_1);
 
-		JLabel lblMiddleName = new JLabel("\u041F\u043E-\u0431\u0430\u0442\u044C\u043A\u043E\u0432\u0456");
-		pCenter.add(lblMiddleName);
+		JLabel lblEntranceReportingForm = new JLabel("\u0412\u0445\u0456\u0434\u043D\u0430 \u0444\u043E\u0440\u043C\u0430 \u0437\u0432\u0456\u0442\u043D\u043E\u0441\u0442\u0456");
+		pCenter.add(lblEntranceReportingForm);
 
 		this.lblNewLabel_2 = new JLabel();
 		pCenter.add(this.lblNewLabel_2);
 
-		JLabel lblPhone = new JLabel(
-				"\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u043D\u0438\u0439 \u0442\u0435\u043B\u0435\u0444\u043E\u043D");
-		pCenter.add(lblPhone);
+		JLabel lblAddress = new JLabel(
+				"\u0410\u0434\u0440\u0435\u0441\u0430");
+		pCenter.add(lblAddress);
 
 		this.lblNewLabel_3 = new JLabel();
 		pCenter.add(this.lblNewLabel_3);
 
-		JLabel lblTIN = new JLabel("\u0406\u041D\u041D");
-		pCenter.add(lblTIN);
+		JLabel lblBranch = new JLabel("\u0413\u0430\u043B\u0443\u0437\u044C");
+		pCenter.add(lblBranch);
 
 		this.lblNewLabel_4 = new JLabel();
 		pCenter.add(this.lblNewLabel_4);
 
-		JLabel lblAge = new JLabel("\u0412\u0456\u043A");
-		pCenter.add(lblAge);
+		JLabel lblDirector = new JLabel("\u0414\u0438\u0440\u0435\u043A\u0442\u043E\u0440");
+		pCenter.add(lblDirector);
 
 		this.lblNewLabel_5 = new JLabel();
 		pCenter.add(this.lblNewLabel_5);
 
-		JLabel lblMaritialStatus = new JLabel(
-				"\u0421\u0456\u043C\u0435\u0439\u043D\u0438\u0439 \u0441\u0442\u0430\u043D");
-		pCenter.add(lblMaritialStatus);
+		JLabel lblDirectorPhone = new JLabel(
+				"\u0422\u0435\u043B\u0435\u0444\u043E\u043D \u0434\u0438\u0440\u0435\u043A\u0442\u043E\u0440\u0430");
+		pCenter.add(lblDirectorPhone);
 
 		this.lblNewLabel_6 = new JLabel();
 		pCenter.add(this.lblNewLabel_6);
 
-		JLabel lblChildrenNum = new JLabel(
-				"\u041A\u0456\u043B\u044C\u043A\u0456\u0441\u0442\u044C \u0434\u0456\u0442\u0435\u0439");
-		pCenter.add(lblChildrenNum);
+		JLabel lblAccountant = new JLabel(
+				"\u0411\u0443\u0445\u0433\u0430\u043B\u0442\u0435\u0440");
+		pCenter.add(lblAccountant);
 
 		this.lblNewLabel_7 = new JLabel();
 		pCenter.add(this.lblNewLabel_7);
 
-		JLabel lblFieldOfActivity = new JLabel(
-				"\u0421\u0444\u0435\u0440\u0430 \u0434\u0456\u044F\u043B\u044C\u043D\u043E\u0441\u0442\u0456");
-		pCenter.add(lblFieldOfActivity);
+		JLabel lblAccountantPhone = new JLabel(
+				"\u0422\u0435\u043B\u0435\u0444\u043E\u043D \u0431\u0443\u0445\u0433\u0430\u043B\u0442\u0435\u0440\u0430");
+		pCenter.add(lblAccountantPhone);
 
 		this.lblNewLabel_8 = new JLabel();
 		pCenter.add(this.lblNewLabel_8);
 
-		JLabel lblQualification = new JLabel(
-				"\u041A\u0432\u0430\u043B\u0456\u0444\u0456\u043A\u0430\u0446\u0456\u044F");
-		pCenter.add(lblQualification);
+		JLabel lblContactPerson = new JLabel(
+				"\u041A\u043E\u043D\u0442\u0430\u043A\u0442\u043D\u0430 \u043E\u0441\u043E\u0431\u0430");
+		pCenter.add(lblContactPerson);
 
 		this.lblNewLabel_9 = new JLabel();
 		pCenter.add(this.lblNewLabel_9);
 
-		JLabel lblWorkExperience = new JLabel("\u0421\u0442\u0430\u0436 \u0440\u043E\u0431\u043E\u0442\u0438");
-		pCenter.add(lblWorkExperience);
+		JLabel lblContactPersonPhone = new JLabel("\u0422\u0435\u043B\u0435\u0444\u043E\u043D");
+		pCenter.add(lblContactPersonPhone);
 
 		this.lblNewLabel_10 = new JLabel();
 		pCenter.add(this.lblNewLabel_10);
 
-		JLabel lblCreditHistory = new JLabel(
-				"\u041A\u0440\u0435\u0434\u0438\u0442\u043D\u0430 \u0456\u0441\u0442\u043E\u0440\u0456\u044F");
-		pCenter.add(lblCreditHistory);
+		JLabel lblFax = new JLabel(
+				"\u0424\u0430\u043A\u0441");
+		pCenter.add(lblFax);
 
 		this.lblNewLabel_11 = new JLabel();
 		pCenter.add(this.lblNewLabel_11);
@@ -157,6 +163,36 @@ public class IndividualProfileWindow extends JFrame {
 		this.table.getColumnModel().getColumn(0).setPreferredWidth(90);
 		this.table.getColumnModel().getColumn(1).setPreferredWidth(99);
 		this.table.getColumnModel().getColumn(2).setPreferredWidth(134);
+		
+		JLabel lblEmail = new JLabel("\u0415\u043B\u0435\u043A\u0442\u0440\u043E\u043D\u043D\u0430 \u043F\u043E\u0448\u0442\u0430");
+		pCenter.add(lblEmail);
+		
+		this.lblNewLabel_13 = new JLabel("");
+		pCenter.add(this.lblNewLabel_13);
+		
+		JLabel lblNACE = new JLabel("\u041A\u0412\u0415\u0414");
+		pCenter.add(lblNACE);
+		
+		this.lblNewLabel_14 = new JLabel("");
+		pCenter.add(this.lblNewLabel_14);
+		
+		JLabel lblUSREOU = new JLabel("\u0404\u0414\u0420\u041F\u041E\u0423");
+		pCenter.add(lblUSREOU);
+		
+		this.lblNewLabel_15 = new JLabel("");
+		pCenter.add(this.lblNewLabel_15);
+		
+		JLabel lblKOATUU = new JLabel("\u041A\u041E\u0410\u0422\u0423\u0423");
+		pCenter.add(lblKOATUU);
+		
+		this.lblNewLabel_16 = new JLabel("");
+		pCenter.add(this.lblNewLabel_16);
+		
+		JLabel lblCreditHistory = new JLabel("\u041A\u0440\u0435\u0434\u0438\u0442\u043D\u0430 \u0456\u0441\u0442\u043E\u0440\u0456\u044F");
+		pCenter.add(lblCreditHistory);
+		
+		this.lblNewLabel_17 = new JLabel("");
+		pCenter.add(this.lblNewLabel_17);
 		pCenter.add(this.table);
 
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -177,7 +213,7 @@ public class IndividualProfileWindow extends JFrame {
 		});
 		pBottom.add(btnToMain);
 		
-		logger.trace("Returning from IndividualProfileWindow()");
+		logger.trace("Returning from LegalProfileWindow()");
 	}
 
 }
