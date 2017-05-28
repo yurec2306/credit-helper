@@ -6,19 +6,25 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import main.LegalModel;
 
 public class LegalModelDAO implements AutoCloseable {
 	
+	private static Logger logger = LoggerFactory.getLogger(LegalModelDAO.class);
+	
 	private SessionFactory sessionFactory;
 	
 	public LegalModelDAO() {
-		sessionFactory = new Configuration().configure().buildSessionFactory();
+		logger.trace("Calling LegalModelDAO()");
+		this.sessionFactory = new Configuration().configure().buildSessionFactory();
+		logger.trace("Returning from LegalModelDAO()");
 	}
 
 	public SessionFactory getSession() {
-		return sessionFactory;
+		return this.sessionFactory;
 	}
 	
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -26,44 +32,68 @@ public class LegalModelDAO implements AutoCloseable {
     }
 	
 	public void saveOrUpdate(LegalModel model) {
-		Session session = sessionFactory.openSession();
+		logger.trace("Calling saveOrUpdate({})", model);
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(model);
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.trace("Returning from saveOrUpdate({})", model);
 	}
 	
-	public void delete(LegalModel form) {
-		Session session = sessionFactory.openSession();
+	public void delete(LegalModel model) {
+		logger.trace("Calling delete({})", model);
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
-		session.delete(form);
+		session.delete(model);
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.trace("Returning from delete({})", model);
 	}
 	
 	public LegalModel getModel(String name) {
-		Session session = sessionFactory.openSession();
+		logger.trace("Calling getModel({})", name);
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		Query<LegalModel> query = session.createQuery("FROM Legal_Forms WHERE organization_name = :name", LegalModel.class);
 		query.setParameter("name", name);
 		LegalModel model = query.uniqueResult();
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.debug("model: ", model);
+		
+		logger.trace("Returning from getModel({})", name);
 		return model;
 	}
 
-	public void close() {
-		sessionFactory.close();	
-	}
-
 	public List<LegalModel> getAllModels() {
-		Session session = sessionFactory.openSession();
+		logger.trace("Calling getAllModels()");
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		Query<LegalModel> query = session.createQuery("FROM Legal_Forms", LegalModel.class);
 		List<LegalModel> models = query.list();
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.debug("models: ", models);
+		
+		logger.trace("Returning from getAllModels()");
 		return models;
+	}
+	
+	@Override
+	public void close() {
+		logger.trace("Calling close()");
+		logger.debug("Closing sessionFactory");
+		this.sessionFactory.close();	
+		logger.trace("Returning from close()");	
 	}
 	
 }

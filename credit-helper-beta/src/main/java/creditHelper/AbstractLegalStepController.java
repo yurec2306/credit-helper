@@ -10,5 +10,6 @@ public abstract class AbstractLegalStepController implements StepController {
 		this.model = model;
 	}
 	
+	@Override
 	abstract public void init();
 }

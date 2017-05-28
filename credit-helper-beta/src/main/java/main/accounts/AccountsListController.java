@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import javax.swing.Action;
 import javax.swing.table.DefaultTableModel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dataBase.AccountDAO;
 import main.registration.RegistrationController;
 
 public class AccountsListController {
+	
+	private static Logger logger = LoggerFactory.getLogger(AccountsListController.class);
 	
 	private final static int TABLE_ROWS_NUM = 5;
 	
@@ -19,17 +24,22 @@ public class AccountsListController {
 	private AccountsListModel model;
 	
 	public AccountsListController() {
-		model = new AccountsListModel();
+		logger.trace("Calling AccountsListController()");
+		this.model = new AccountsListModel();
+		logger.trace("Returning from AccountsListController()");
 	}
 
 	public void init() {
+		logger.trace("Calling init()");
+		
 		loadAccountsList();
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
-					window = new AccountsListWindow();
+					AccountsListController.this.window = new AccountsListWindow();
 					
-					window.table.setModel(new DefaultTableModel(loadObjects(),
+					AccountsListController.this.window.table.setModel(new DefaultTableModel(loadObjects(),
 							new String[] {
 								"\u2116", "\u041F\u0406\u0411", "\u041B\u043E\u0433\u0456\u043D \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456", "\u0412\u0438\u0434\u0430\u043B\u0438\u0442\u0438", "\u0420\u0435\u0434\u0430\u0433\u0443\u0432\u0430\u0442\u0438"
 							}
@@ -37,139 +47,111 @@ public class AccountsListController {
 							Class[] columnTypes = new Class[] {
 								Integer.class, AccountModel.class, String.class, Object.class, Object.class
 							};
+							@Override
 							public Class getColumnClass(int columnIndex) {
-								return columnTypes[columnIndex];
+								return this.columnTypes[columnIndex];
 							}
 						});
-					window.table.getColumnModel().getColumn(0).setResizable(false);
-					window.table.getColumnModel().getColumn(0).setPreferredWidth(40);
-					window.table.getColumnModel().getColumn(1).setPreferredWidth(200);
-					window.table.getColumnModel().getColumn(2).setPreferredWidth(100);
+					AccountsListController.this.window.table.getColumnModel().getColumn(0).setResizable(false);
+					AccountsListController.this.window.table.getColumnModel().getColumn(0).setPreferredWidth(40);
+					AccountsListController.this.window.table.getColumnModel().getColumn(1).setPreferredWidth(200);
+					AccountsListController.this.window.table.getColumnModel().getColumn(2).setPreferredWidth(100);
 					
-					window.btnUpdate = new ButtonColumn(window.table, new Action() {
+					AccountsListController.this.window.btnUpdate = new ButtonColumn(AccountsListController.this.window.table, new Action() {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							new AccountInfoController((AccountModel) window.table.getModel().getValueAt(window.table.getSelectedRow(), 1)).init();		
+							new AccountInfoController((AccountModel) AccountsListController.this.window.table.getModel().getValueAt(AccountsListController.this.window.table.getSelectedRow(), 1)).init();		
 						}
 						
 						@Override
-						public void setEnabled(boolean b) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void setEnabled(boolean b) {}
 						
 						@Override
-						public void removePropertyChangeListener(PropertyChangeListener listener) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void removePropertyChangeListener(PropertyChangeListener listener) {}
 						
 						@Override
-						public void putValue(String key, Object value) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void putValue(String key, Object value) {}
 						
 						@Override
-						public boolean isEnabled() {
-							// TODO Auto-generated method stub
-							return false;
-						}
+						public boolean isEnabled() { return false; }
 						
 						@Override
-						public Object getValue(String key) {
-							// TODO Auto-generated method stub
-							return null;
-						}
+						public Object getValue(String key) { return null; }
 						
 						@Override
-						public void addPropertyChangeListener(PropertyChangeListener listener) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void addPropertyChangeListener(PropertyChangeListener listener) {}
 					}, 4);
 					
-					window.btnDelete = new ButtonColumn(window.table, new Action() {
+					AccountsListController.this.window.btnDelete = new ButtonColumn(AccountsListController.this.window.table, new Action() {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							try(AccountDAO dao = new AccountDAO()) {
-								dao.delete((AccountModel) window.table.getModel().getValueAt(window.table.getSelectedRow(), 1));
-							} catch (Exception e) {
+								dao.delete((AccountModel) AccountsListController.this.window.table.getModel().getValueAt(AccountsListController.this.window.table.getSelectedRow(), 1));
 							}
 						}
 						
 						@Override
-						public void setEnabled(boolean b) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void setEnabled(boolean b) {}
 						
 						@Override
-						public void removePropertyChangeListener(PropertyChangeListener listener) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void removePropertyChangeListener(PropertyChangeListener listener) {}
 						
 						@Override
-						public void putValue(String key, Object value) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void putValue(String key, Object value) {}
 						
 						@Override
-						public boolean isEnabled() {
-							// TODO Auto-generated method stub
-							return false;
-						}
+						public boolean isEnabled() { return false; }
 						
 						@Override
-						public Object getValue(String key) {
-							// TODO Auto-generated method stub
-							return null;
-						}
+						public Object getValue(String key) { return null; }
 						
 						@Override
-						public void addPropertyChangeListener(PropertyChangeListener listener) {
-							// TODO Auto-generated method stub
-							
-						}
+						public void addPropertyChangeListener(PropertyChangeListener listener) { }
 					}, 3);
 					
-					window.btnCreateNewAccount.addActionListener(new ActionListener() {
+					AccountsListController.this.window.btnCreateNewAccount.addActionListener(new ActionListener() {
+						@Override
 						public void actionPerformed(ActionEvent e) {
 							new RegistrationController().init();
-							window.setVisible(false);
-							window.dispose();
+							AccountsListController.this.window.setVisible(false);
+							AccountsListController.this.window.dispose();
 						}
 					});
 					
-					window.btnBack.addActionListener(new ActionListener() {
+					AccountsListController.this.window.btnBack.addActionListener(new ActionListener() {
+						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							window.setVisible(false);
-							window.dispose();
+							AccountsListController.this.window.setVisible(false);
+							AccountsListController.this.window.dispose();
 						}
 					});
 					
-					window.setVisible(true);
+					AccountsListController.this.window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});	
-
+		
+		logger.trace("Returning from init()");
 	}
 
 	private void loadAccountsList() {
+		logger.trace("Calling loadAccountsList()");
+		
 		try(AccountDAO dao = new AccountDAO()) {
-			model.setAccountsList(dao.getAllAccounts());
-		} catch (Exception e) {
+			this.model.setAccountsList(dao.getAllAccounts());
 		}
+		logger.debug("AccountsList: ", this.model.getAccountsList());	
+		logger.trace("Returning from loadAccountsList()");
 	}
 	
 	private Object[][] loadObjects() {
-		ArrayList<AccountModel> accountList = model.getAccountsList();
+		logger.trace("Calling loadObjects()");
+		
+		ArrayList<AccountModel> accountList = this.model.getAccountsList();
 		Object[][] objects = new Object[accountList.size()][TABLE_ROWS_NUM];
 		for(int i = 0; i < accountList.size(); i++) {
 			objects[i][0] = i;
@@ -177,6 +159,8 @@ public class AccountsListController {
 			//objects[i][1] = (accountList.get(i).getLastName() + " " + accountList.get(i).getFirstName() + " " + accountList.get(i).getMiddleName());
 			objects[i][2] = accountList.get(i).getLogin();
 		}
+		
+		logger.trace("Returning from loadObjects()");
 		return objects;
 	}
 	

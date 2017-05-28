@@ -5,6 +5,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import creditHelper.Step1Controller;
 import main.accounts.AccountModel;
 import main.accounts.AccountModel.UserType;
@@ -14,12 +17,16 @@ import main.rates.LegalRates;
 
 public class MainWindow extends JFrame {
 	
+	private static Logger logger = LoggerFactory.getLogger(MainWindow.class);
+	
 	private static final long serialVersionUID = 1L;
 	
 	private JTextField tfIndividSearch;
 	private JTextField tfLegalSearch;
 
-	public MainWindow(AccountModel model) {		
+	public MainWindow(AccountModel model) {	
+		logger.trace("Creating MainWindow");
+		
 		setMinimumSize(new Dimension(315, 450));
 		setTitle("\u041E\u0446\u0456\u043D\u043A\u0430 \u043A\u0440\u0435\u0434\u0438\u0442\u043E\u0441\u043F\u0440\u043E\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0456");
 		setBounds(100, 100, 330, 450);

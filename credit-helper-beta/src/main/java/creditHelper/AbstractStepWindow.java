@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 abstract public class AbstractStepWindow extends JFrame implements StepWindow {
 	
@@ -16,19 +17,19 @@ abstract public class AbstractStepWindow extends JFrame implements StepWindow {
 	protected JButton btnNext;
 
 	public AbstractStepWindow() {		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
-		pTop = new JPanel();
-		getContentPane().add(pTop, BorderLayout.NORTH);
+		this.pTop = new JPanel();
+		getContentPane().add(this.pTop, BorderLayout.NORTH);
 		
-		pMiddle = new JPanel();
-		getContentPane().add(pMiddle, BorderLayout.CENTER);
+		this.pMiddle = new JPanel();
+		getContentPane().add(this.pMiddle, BorderLayout.CENTER);
 		
-		pBottom = new JPanel();
-		getContentPane().add(pBottom, BorderLayout.SOUTH);
+		this.pBottom = new JPanel();
+		getContentPane().add(this.pBottom, BorderLayout.SOUTH);
 		
-		btnNext = new JButton("\u041F\u0440\u043E\u0434\u043E\u0432\u0436\u0438\u0442\u0438");
-		pBottom.add(btnNext);
+		this.btnNext = new JButton("\u041F\u0440\u043E\u0434\u043E\u0432\u0436\u0438\u0442\u0438");
+		this.pBottom.add(this.btnNext);
 	}
 
 }
