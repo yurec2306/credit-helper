@@ -4,23 +4,29 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dataBase.LegalModelDAO;
 import main.LegalModel;
 
 public class Step7LegalController extends AbstractLegalStepController {
+	
+	private static Logger logger = LoggerFactory.getLogger(Step7LegalController.class);
 
 	private Step7LegalWindow window;
 	
 	public Step7LegalController(LegalModel model) {
 		super(model);
+		
+		logger.trace("Creating Step7LegalController");
 	}
 
 	@Override
 	public void init() {
-		try(LegalModelDAO dao = new LegalModelDAO()) {
-			dao.saveOrUpdate(model);
-		} catch (Exception e) {
-		}
+		logger.trace("Calling init()");
+		
+		saveModel(model);
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -38,6 +44,17 @@ public class Step7LegalController extends AbstractLegalStepController {
 				});
 			}
 		});
+		
+		logger.trace("Returning from init()");
 	}
-
+	
+	private void saveModel(LegalModel model) {
+		logger.trace("Calling saveModel(LegalModel model)");
+		
+		try(LegalModelDAO dao = new LegalModelDAO()) {
+			dao.saveOrUpdate(model);
+		}
+		
+		logger.trace("Returning from saveModel(...)");
+	}
 }

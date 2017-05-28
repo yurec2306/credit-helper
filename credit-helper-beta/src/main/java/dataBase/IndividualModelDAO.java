@@ -6,19 +6,25 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import main.IndividualModel;
 
 public class IndividualModelDAO implements AutoCloseable {
 	
+	private static Logger logger = LoggerFactory.getLogger(IndividualModelDAO.class);
+	
 	private SessionFactory sessionFactory;
 	
 	public IndividualModelDAO() {
-		sessionFactory = new Configuration().configure().buildSessionFactory();
+		logger.trace("Calling IndividualModelDAO()");
+		this.sessionFactory = new Configuration().configure().buildSessionFactory();
+		logger.trace("Returning from IndividualModelDAO()");
 	}
 
-	public SessionFactory getSession() {
-		return sessionFactory;
+	public SessionFactory getSessionFactory() {
+		return this.sessionFactory;
 	}
 	
     public void setSessionFactory(SessionFactory sessionFactory) {
@@ -26,23 +32,33 @@ public class IndividualModelDAO implements AutoCloseable {
     }
 	
 	public void saveOrUpdate(IndividualModel model) {
-		Session session = sessionFactory.openSession();
+		logger.trace("Calling saveOrUpdate({})", model);
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(model);
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.trace("Returning from saveOrUpdate({})", model);
 	}
 	
-	public void delete(IndividualModel form) {
-		Session session = sessionFactory.openSession();
+	public void delete(IndividualModel model) {
+		logger.trace("Calling delete({})", model);
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
-		session.delete(form);
+		session.delete(model);
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.trace("Returning from delete({})", model);
 	}
 	
 	public IndividualModel getModel(String lastName, String firstName, String middleName) {
-		Session session = sessionFactory.openSession();
+		logger.trace("Calling getModel(%s, %s, %s)", lastName, firstName, middleName);
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		Query<IndividualModel> query = session.createQuery("FROM Forms WHERE last_name = :lastName AND first_name = :firstName AND middle_name = :middleName", IndividualModel.class);
 		query.setParameter("lastName", lastName);
@@ -51,21 +67,35 @@ public class IndividualModelDAO implements AutoCloseable {
 		IndividualModel model = query.uniqueResult();
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.debug("model: ", model);
+		
+		logger.trace("Returning from getModel(%s, %s, %s)", lastName, firstName, middleName);
 		return model;
 	}
 	
 	public List<IndividualModel> getAllModels() {
-		Session session = sessionFactory.openSession();
+		logger.trace("Calling getAllModels()");
+		
+		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
 		Query<IndividualModel> query = session.createQuery("FROM Forms", IndividualModel.class);
 		List<IndividualModel> models = query.list();
 		session.getTransaction().commit();
 		session.close();
+		
+		logger.debug("models: ", models);
+		
+		logger.trace("Returning from getAllModels()");
 		return models;
 	}
 
+	@Override
 	public void close() {
-		sessionFactory.close();	
+		logger.trace("Calling close()");
+		logger.debug("Closing sessionFactory");
+		this.sessionFactory.close();	
+		logger.trace("Returning from close()");	
 	}
 	
 }

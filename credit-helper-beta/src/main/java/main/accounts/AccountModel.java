@@ -33,7 +33,7 @@ public class AccountModel implements Serializable {
 	@Column(name = "bunk_number")
 	private String bankNumber;
 	
-	@Column(name = "logun")
+	@Column(name = "login")
 	private String login;
 	
 	@Column(name = "password")
@@ -167,5 +167,13 @@ public class AccountModel implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "AccountModel [ login=" + login + ", id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", middleName="
+				+ middleName + ", userType=" + userType + "]";
+	}
+	
+	
 	
 }
