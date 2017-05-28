@@ -4,13 +4,26 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Step1Controller {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Step1Controller implements StepController {
+	
+	private static Logger logger = LoggerFactory.getLogger(Step1Controller.class);
 
 	private Step1Window window;
 	
+	public Step1Controller() {
+		logger.trace("Calling Step1Controller()");
+		logger.trace("Returning from Step1Controller()");
+	}
 	
+	@Override
 	public void init() {
+		logger.trace("Calling init()");
+		
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					window = new Step1Window();
@@ -20,6 +33,7 @@ public class Step1Controller {
 				}
 				window.btnNext.setVisible(false);
 				window.btnNewIndividual.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						window.setVisible(false);
 						window.dispose();
@@ -28,6 +42,7 @@ public class Step1Controller {
 					}
 				});
 				window.btnNewLegal.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						window.setVisible(false);
 						window.dispose();
@@ -36,6 +51,7 @@ public class Step1Controller {
 					}
 				});
 				window.btnToMain.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent e) {
 						window.setVisible(false);
 						window.dispose();
@@ -43,6 +59,8 @@ public class Step1Controller {
 				});
 			}
 		});
+		
+		logger.trace("Returning from init()");
 	}
 
 }

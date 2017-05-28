@@ -5,6 +5,9 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.GroupLayout.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import creditHelper.Step1Controller;
 import main.accounts.AccountModel;
 import main.accounts.AccountModel.UserType;
@@ -14,12 +17,16 @@ import main.rates.LegalRates;
 
 public class MainWindow extends JFrame {
 	
+	private static Logger logger = LoggerFactory.getLogger(MainWindow.class);
+	
 	private static final long serialVersionUID = 1L;
 	
 	private JTextField tfIndividSearch;
 	private JTextField tfLegalSearch;
 
-	public MainWindow(AccountModel model) {		
+	public MainWindow(AccountModel model) {	
+		logger.trace("Creating MainWindow");
+		
 		setMinimumSize(new Dimension(315, 450));
 		setTitle("\u041E\u0446\u0456\u043D\u043A\u0430 \u043A\u0440\u0435\u0434\u0438\u0442\u043E\u0441\u043F\u0440\u043E\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0456");
 		setBounds(100, 100, 330, 450);
@@ -32,8 +39,10 @@ public class MainWindow extends JFrame {
 		
 		JMenuItem mntmProperties = new JMenuItem("\u041D\u0430\u043B\u0430\u0448\u0442\u0443\u0432\u0430\u043D\u043D\u044F");
 		mntmProperties.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
-				// open property window
+				PropertyWindow pw = new PropertyWindow();
+				pw.setVisible(true);
 			}
 		});
 		mnFile.add(mntmProperties);
@@ -43,6 +52,7 @@ public class MainWindow extends JFrame {
 		
 		JMenuItem mntmExit = new JMenuItem("\u0412\u0438\u0439\u0442\u0438");
 		mntmExit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
@@ -55,6 +65,7 @@ public class MainWindow extends JFrame {
 		
 		JButton btnNewCredit = new JButton("\u041E\u0446\u0456\u043D\u043A\u0430 \u043A\u0440\u0435\u0434\u0438\u0442\u043E\u0441\u043F\u0440\u043E\u043C\u043E\u0436\u043D\u043E\u0441\u0442\u0456");
 		btnNewCredit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				Step1Controller step1 = new Step1Controller();
 				step1.init();
@@ -63,6 +74,7 @@ public class MainWindow extends JFrame {
 		
 		JButton btnLegalsScore = new JButton("\u0420\u0435\u0439\u0442\u0438\u043D\u0433 \u043F\u0456\u0434\u043F\u0440\u0438\u0454\u043C\u0441\u0442\u0432");
 		btnLegalsScore.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				LegalRates frame = new LegalRates();
 				frame.setVisible(true);
@@ -71,6 +83,7 @@ public class MainWindow extends JFrame {
 		
 		JButton btnIndividualsScore = new JButton("\u0420\u0435\u0439\u0442\u0438\u043D\u0433 \u0444\u0456\u0437\u0438\u0447\u043D\u0438\u0445 \u043E\u0441\u0456\u0431");
 		btnIndividualsScore.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				IndividualRates frame = new IndividualRates();
 				frame.setVisible(true);
@@ -103,6 +116,7 @@ public class MainWindow extends JFrame {
 		
 		JButton btnAccounts = new JButton("\u0420\u0430\u0431\u043E\u0442\u0430 \u0437 \u0430\u043A\u0430\u0443\u043D\u0442\u0430\u043C\u0438 \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456");
 		btnAccounts.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				AccountsListController alc = new AccountsListController();
 				alc.init();
