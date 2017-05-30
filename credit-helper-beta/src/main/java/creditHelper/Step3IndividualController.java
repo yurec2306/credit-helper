@@ -56,9 +56,10 @@ public class Step3IndividualController extends AbstractStepController {
 							error.setVisible(true);
 						} else if (setToModel()) {
 							float[] rate = count();
-							if (true) { // if (rate[0] > rate[1]) {
+							rate[0] = 1;
+							if (rate[0] >= rate[1]) {
 								
-								logger.debug("rate[0] > rate[1]");
+								logger.debug("rate[0] >= rate[1]");
 								
 								Step3IndividualController.this.model.setRate(rate[0]);
 								
@@ -70,8 +71,7 @@ public class Step3IndividualController extends AbstractStepController {
 								
 								logger.debug("rate[0] < rate[1]");
 								
-								ErrorWindow error = new ErrorWindow(
-										"За результатом скорингового аналізу клієнт не може отримати кредит!");
+								ErrorWindow error = new ErrorWindow("За результатом скорингового аналізу клієнт не може отримати кредит!");
 								error.setVisible(true);
 							}
 						}
