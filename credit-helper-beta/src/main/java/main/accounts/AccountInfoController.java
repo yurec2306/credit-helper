@@ -19,7 +19,6 @@ public class AccountInfoController {
 	
 	private AccountModel model;
 	private AccountInfoWindow window;
-	private boolean isAccountInfoChanged = false;
 	
 	public AccountInfoController(AccountModel model) {
 		logger.trace("Calling AccountInfoController({})", model);
@@ -35,24 +34,9 @@ public class AccountInfoController {
 			public void run() {
 				try {
 					window = new AccountInfoWindow();
-					window.tfLastName.addFocusListener(new FocusAdapter() {
-						private String text;
-						@Override
-						public void focusGained(FocusEvent e) {
-							this.text = ((JTextField) e.getSource()).getText();
-						}
-						@Override
-						public void focusLost(FocusEvent e) {
-							if (!((JTextField) e.getSource()).getText().equals(this.text)) {
-								isAccountInfoChanged = true;
-							}
-						}
-					});
 					window.btnNext.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							if (!isAccountInfoChanged)
-								return;
 							setToModel(model);
 							try(AccountDAO dao = new AccountDAO()) {
 								dao.saveOrUpdate(model);

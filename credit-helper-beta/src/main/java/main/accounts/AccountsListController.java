@@ -65,7 +65,7 @@ public class AccountsListController {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							new AccountInfoController((AccountModel) window.table.getModel().getValueAt(window.table.getSelectedRow(), 1)).init();		
+							new AccountInfoController(model.getAccountsList().get(window.table.getSelectedRow())).init();		
 						}
 						
 						@Override
@@ -92,7 +92,7 @@ public class AccountsListController {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							try(AccountDAO dao = new AccountDAO()) {
-								dao.delete((AccountModel) window.table.getModel().getValueAt(window.table.getSelectedRow(), 1));
+								dao.delete(model.getAccountsList().get(window.table.getSelectedRow()));
 							}
 						}
 						
@@ -159,8 +159,7 @@ public class AccountsListController {
 		Object[][] objects = new Object[accountList.size()][TABLE_ROWS_NUM];
 		for(int i = 0; i < accountList.size(); i++) {
 			objects[i][0] = i;
-			objects[i][1] = accountList.get(i);
-			//objects[i][1] = (accountList.get(i).getLastName() + " " + accountList.get(i).getFirstName() + " " + accountList.get(i).getMiddleName());
+			objects[i][1] = (accountList.get(i).getLastName() + " " + accountList.get(i).getFirstName() + " " + accountList.get(i).getMiddleName());
 			objects[i][2] = accountList.get(i).getLogin();
 			
 			logger.debug("objects[{}]: {}", i, objects[i]);
