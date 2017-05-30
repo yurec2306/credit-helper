@@ -56,7 +56,7 @@ public class Step3IndividualController extends AbstractStepController {
 							error.setVisible(true);
 						} else if (setToModel()) {
 							float[] rate = count();
-							if (rate[0] > rate[1]) {
+							if (true) { // if (rate[0] > rate[1]) {
 								
 								logger.debug("rate[0] > rate[1]");
 								
