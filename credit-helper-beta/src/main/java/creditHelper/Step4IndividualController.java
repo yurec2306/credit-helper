@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import main.CreditModel;
 import main.CreditModel.CreditType;
 import main.IndividualModel.CreditHistory;
 import main.ErrorWindow;
@@ -44,8 +45,8 @@ public class Step4IndividualController extends AbstractStepController {
 				window.btnNext.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						setToModel();
-						if(checkValidness()) {
+						setToModel(window);
+						if(checkValidness(model)) {
 							window.setVisible(false);
 							Step5IndividualController step4 = new Step5IndividualController(model);
 							step4.init();
@@ -59,17 +60,17 @@ public class Step4IndividualController extends AbstractStepController {
 		logger.trace("Returning from init()");
 	}
 
-	private void setToModel() {
+	public void setToModel(Step4IndividualWindow window) {
 		logger.trace("Calling setToModel()");
 		
-		if (this.window.cbCreditType.getSelectedItem() == CreditType.SHORT_TERM) {
+		if (window.cbCreditType.getSelectedItem() == CreditType.SHORT_TERM) {
 			
 			logger.trace("CreditType == SHORT_TERM");
 			
-			this.model.getLastCredit().setProvision(Double.parseDouble(this.window.tfProvision.getText()));
+			this.model.getLastCredit().setProvision(Double.parseDouble(window.tfProvision.getText()));
 			this.model.getLastCredit().setCreditRate(SMALL_CREDIT_PERCENT);
 		} else {			
-			this.model.getLastCredit().setDownPayment(Double.parseDouble(this.window.tfDownPayment.getText()));
+			this.model.getLastCredit().setDownPayment(Double.parseDouble(window.tfDownPayment.getText()));
 			if (this.model.getLastCredit().getCreditType() == CreditType.LONG_TERM_CAR) {
 				
 				logger.trace("CreditType == LONG_TERM_CAR");
@@ -82,63 +83,71 @@ public class Step4IndividualController extends AbstractStepController {
 				this.model.getLastCredit().setCreditRate(HOME_CREDIT_PERCENT);
 			}
 		}
-		this.model.getLastCredit().setCreditType((CreditType) this.window.cbCreditType.getSelectedItem());
-		this.model.getLastCredit().setCreditSize(Double.parseDouble(this.window.tfCreditSize.getText()));
-		this.model.getLastCredit().setCreditLength(Double.parseDouble(this.window.tfCreditLength.getText()));
+		this.model.getLastCredit().setCreditType((CreditType) window.cbCreditType.getSelectedItem());
+		this.model.getLastCredit().setCreditSize(Double.parseDouble(window.tfCreditSize.getText()));
+		this.model.getLastCredit().setCreditLength(Double.parseDouble(window.tfCreditLength.getText()));
 		
 		logger.trace("Returning from setToModel()");
 	}
 	
-	private boolean checkValidness() {
+	public boolean checkValidness(IndividualModel model) {
 		logger.trace("Calling checkValidness()");
+		
+		double creditSize = model.getLastCredit().getCreditSize();
+		double creditRate = model.getLastCredit().getCreditRate();
+		double creditLength = model.getLastCredit().getCreditLength();
+		double provision = model.getLastCredit().getProvision();
+		double monthlyIncome = model.getMonthlyIncome();
+		CreditHistory creditHistory = model.getCreditHistory();
+		CreditType creditType = model.getLastCredit().getCreditType();
 		
 		boolean result = true;
 		
 		if (this.model.getLastCredit().getCreditType() == CreditType.SHORT_TERM) {
 			logger.trace("CreditType == SHORT_TERM");
 			
-			double percentCost = this.model.getLastCredit().getCreditSize() * this.model.getLastCredit().getCreditRate() * (this.model.getLastCredit().getCreditLength() + 1.0) / 24.0;
+			double percentCost = creditSize * creditRate * (creditLength + 1.0) / 24.0;
 			logger.debug("percentCost: ", percentCost);
 			
-			double sum = this.model.getLastCredit().getCreditSize() + percentCost;
+			double sum = creditSize + percentCost;
 			logger.debug("sum: ", sum);
 			
-			double netIncome = this.model.getMonthlyIncome() * 0.4; // чистый доход
+			double netIncome = monthlyIncome * 0.4; // чистый доход
 			logger.debug("netIncome: ", netIncome);
 			
-			double allNetIncome = netIncome * this.model.getLastCredit().getCreditLength(); // чистый доход за весь период
+			double allNetIncome = netIncome * creditLength; // чистый доход за весь период
 			logger.debug("allNetIncome: ", allNetIncome);
 			
 			if (allNetIncome < sum) {
 				
 				logger.debug("allNetIncome({}) < sum({})", allNetIncome, sum);
 				
-				ErrorWindow error = new ErrorWindow("За " + this.model.getLastCredit().getCreditLength() + " місяців клієнт може выплатити лише " + allNetIncome + " грн. з " + sum + "грн.");
+				ErrorWindow error = new ErrorWindow("За " + creditLength + " місяців клієнт може выплатити лише " + allNetIncome + " грн. з " + sum + "грн.");
 				error.setVisible(true);
 				result = false;
 			}
-			if (this.model.getCreditHistory() == CreditHistory.IS_REPAID_REGULARLY && this.model.getLastCredit().getProvision() < allNetIncome * 2.0) {
+			if (creditHistory == CreditHistory.IS_REPAID_REGULARLY && provision < (allNetIncome * 2.0)) {
 				
 				logger.trace("CreditHistory == IS_REPAID_REGULARLY");
-				logger.debug("provision({}) < 2*allNetIncome({})", this.model.getLastCredit().getProvision(), (allNetIncome * 2.0));
+				logger.debug("provision({}) < 2*allNetIncome({})", provision, (allNetIncome * 2.0));
 				
-				ErrorWindow error = new ErrorWindow("Розмір забезпечення (" + this.model.getLastCredit().getProvision() + "грн.) повинен бути більше подвійного чистого доходу (" + allNetIncome * 2.0 + " грн.)");
+				ErrorWindow error = new ErrorWindow("Розмір забезпечення (" + provision + "грн.) повинен бути більше подвійного чистого доходу (" + allNetIncome * 2.0 + " грн.)");
 				error.setVisible(true);
 				result = false;
 			}
 		} else {
-			if (this.model.getLastCredit().getCreditType() == CreditType.LONG_TERM_CAR) { //машина
+			if (creditType == CreditType.LONG_TERM_CAR) { //машина
 				
 				logger.trace("CreditType == LONG_TERM_CAR");
 				
-				if(!calc(this.model, CAR_CREDIT_PERCENT)) {
+				if(!calc(model.getLastCredit(), CAR_CREDIT_PERCENT)) {
 					result = false;
 				}
 			} else { // квартира
 				
 				logger.trace("CreditType == LONG_TERM_HOME");
 				
-				if(!calc(this.model, HOME_CREDIT_PERCENT)) {
+				if(!calc(model.getLastCredit(), HOME_CREDIT_PERCENT)) {
 					result = false;
 				}
 			}
@@ -147,30 +156,30 @@ public class Step4IndividualController extends AbstractStepController {
 		return result;
 	}
 	
-	private static boolean calc(IndividualModel model, double downPaymentMinPercent) {
-		logger.trace("Calling from calc({}, {})", model, downPaymentMinPercent);
+	private static boolean calc(CreditModel credit, double downPaymentMinPercent) {
+		logger.trace("Calling from calc({}, {})", credit, downPaymentMinPercent);
 		
 		boolean result = true;
-		if(model.getLastCredit().getDownPayment() < model.getLastCredit().getCreditSize() * downPaymentMinPercent) {
+		if(credit.getDownPayment() < credit.getCreditSize() * downPaymentMinPercent) {
 			
-			logger.debug("downPayment({}) < creditSize * downPaymentMinPercent({})", model.getLastCredit().getDownPayment(), (model.getLastCredit().getCreditSize()*downPaymentMinPercent));
+			logger.debug("downPayment({}) < creditSize * downPaymentMinPercent({})", credit.getDownPayment(), (credit.getCreditSize() * downPaymentMinPercent));
 			
 			result = false;
-			ErrorWindow error = new ErrorWindow("Розмір першого взносу (" + model.getLastCredit().getDownPayment() + " грн.) повинен складати 10% від розміру кредиту (" + model.getLastCredit().getCreditSize() + " грн.)");
+			ErrorWindow error = new ErrorWindow("Розмір першого взносу (" + credit.getDownPayment() + " грн.) повинен складати 10% від розміру кредиту (" + credit.getCreditSize() + " грн.)");
 			error.setVisible(true);
 		}
-		double percentCost = (model.getLastCredit().getCreditSize() - model.getLastCredit().getDownPayment()) * model.getLastCredit().getCreditRate() * (model.getLastCredit().getCreditLength() + 1.0) / 24.0;
+		double percentCost = (credit.getCreditSize() - credit.getDownPayment()) * credit.getCreditRate() * (credit.getCreditLength() + 1.0) / 24.0;
 		logger.debug("percentCost: ", percentCost);
 		
-		double sum = model.getLastCredit().getCreditSize() + percentCost;
+		double sum = credit.getCreditSize() + percentCost;
 		logger.debug("sum: ", sum);
 		
-		if (sum < model.getLastCredit().getNetIncome()) {
+		if (sum < credit.getNetIncome()) {
 			
 			logger.debug("sum < netIncome");
 			
 			result = false;
-			ErrorWindow error = new ErrorWindow("Розмір чистого доходу на місяць (" + model.getLastCredit().getDownPayment() + " грн.) повинен дорівнювати або бути більше суми повернення (" + sum + " грн.)");
+			ErrorWindow error = new ErrorWindow("Розмір чистого доходу на місяць (" + credit.getDownPayment() + " грн.) повинен дорівнювати або бути більше суми повернення (" + sum + " грн.)");
 			error.setVisible(true);
 		}
 		
