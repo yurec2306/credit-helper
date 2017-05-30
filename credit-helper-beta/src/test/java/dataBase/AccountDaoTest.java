@@ -1,51 +1,54 @@
 package dataBase;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
-import java.lang.annotation.Annotation;
-
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.internal.SessionFactoryImpl;
-import org.hibernate.internal.SessionImpl;
 import org.junit.Test;
-
-import com.fasterxml.classmate.AnnotationConfiguration;
-import com.fasterxml.classmate.AnnotationInclusion;
 
 import main.accounts.AccountModel;
 
 public class AccountDaoTest {
+	private File f = new File(".\\src\\test\\resources\\HibernateTest.cfg.xml");
+	private SessionFactory sessionFactory = new Configuration().configure(f).buildSessionFactory();
+	private AccountModel model = new AccountModel();
+	private String testLogin = "Test";
+	private char[] testPass = {'T', 'e', 's', 't'};
+	
 
 	@Test
 	public void testSaveOrUpdate() {
 		AccountDAO dao = new AccountDAO();
-		File f = new File("..\\HibernateTest.cfg.xml");
-		SessionFactory sessionFactory = new Configuration().configure(f).buildSessionFactory();
 		dao.setSessionFactory(sessionFactory);
-		AccountModel model = new AccountModel();
-		model.setFirstName("Test Name");
+		model.setLogin(testLogin);
+		model.setPassword(testPass);
 		dao.saveOrUpdate(model);
 		dao.close();
 	}
 	
 	@Test
-	public void testDelete() {
-		
-	}
-	
-	@Test
 	public void testGetAccount() {
-
+		AccountDAO dao = new AccountDAO();
+		dao.setSessionFactory(sessionFactory);
+		AccountModel newModel = dao.getAccount(testLogin, testPass);
+		dao.close();
+		assertEquals(model, newModel);
 	}
 	
 	@Test
 	public void testGetAllAccounts() {
 	
+	}
+	
+	@Test
+	public void testDelete() {
+		AccountDAO dao = new AccountDAO();
+		dao.setSessionFactory(sessionFactory);
+		AccountModel newModel = dao.getAccount(testLogin, testPass);
+		dao.close();
+		assertEquals(model, newModel);
 	}
 	
 	@Test
