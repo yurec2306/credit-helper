@@ -3,6 +3,8 @@ package creditHelper;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,9 @@ import main.IndividualModel.CreditHistory;
 import main.IndividualModel.FieldOfActivity;
 import main.IndividualModel.MaritialStatus;
 import main.IndividualModel.Qualification;
+import neuralNetwork.NetworkHelper;
+import neuralNetwork.NeuralNetwork;
+import neuralNetwork.NeuralNetworkImpl;
 
 public class Step3IndividualController extends AbstractStepController {
 	
@@ -50,10 +55,8 @@ public class Step3IndividualController extends AbstractStepController {
 							ErrorWindow error = new ErrorWindow(" лiенту маЇ бути 20 рок≥в!");
 							error.setVisible(true);
 						} else if (setToModel()) {
-							
-							double[] rate = count();
-							
-							if (rate[0] > rate[1] ? true : false) { // 680 / 1010
+							float[] rate = count();
+							if (rate[0] > rate[1]) {
 								
 								logger.debug("rate[0] > rate[1]");
 								
@@ -130,17 +133,15 @@ public class Step3IndividualController extends AbstractStepController {
 		return result;
 	}
 
-	private double[] count() {
-		logger.trace("Calling count()");
-		
-		double[] result;
-		
-		//Neural Network work
-		
-		result = new double[] {1.0, 0.0};
-		logger.debug("result: ", result);
-		
-		logger.trace("Returning from count()");
+	private float[] count() {
+		float[] result = null;
+		NeuralNetwork nn = new NeuralNetworkImpl();
+		NetworkHelper nh = new NetworkHelper();
+		try {
+			result = nn.run(nh.formToNeuron(model));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
 		return result;
 	}
 
