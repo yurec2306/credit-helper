@@ -66,7 +66,7 @@ public class LegalModelDAO implements AutoCloseable {
 		session.getTransaction().commit();
 		session.close();
 		
-		logger.debug("model: ", model);
+		logger.debug("model: {}", model);
 		
 		logger.trace("Returning from getModel({})", name);
 		return model;
@@ -82,7 +82,7 @@ public class LegalModelDAO implements AutoCloseable {
 		session.getTransaction().commit();
 		session.close();
 		
-		logger.debug("models: ", models);
+		logger.debug("models: {}", models);
 		
 		logger.trace("Returning from getAllModels()");
 		return models;
@@ -91,7 +91,6 @@ public class LegalModelDAO implements AutoCloseable {
 	@Override
 	public void close() {
 		logger.trace("Calling close()");
-		logger.debug("Closing sessionFactory");
 		this.sessionFactory.close();	
 		logger.trace("Returning from close()");	
 	}

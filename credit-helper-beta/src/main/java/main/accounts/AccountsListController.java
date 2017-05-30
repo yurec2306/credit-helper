@@ -37,11 +37,15 @@ public class AccountsListController {
 			@Override
 			public void run() {
 				try {
-					AccountsListController.this.window = new AccountsListWindow();
+					window = new AccountsListWindow();
 					
-					AccountsListController.this.window.table.setModel(new DefaultTableModel(loadObjects(),
+					window.table.setModel(new DefaultTableModel(loadObjects(),
 							new String[] {
-								"\u2116", "\u041F\u0406\u0411", "\u041B\u043E\u0433\u0456\u043D \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456", "\u0412\u0438\u0434\u0430\u043B\u0438\u0442\u0438", "\u0420\u0435\u0434\u0430\u0433\u0443\u0432\u0430\u0442\u0438"
+								"\u2116",
+								"\u041F\u0406\u0411",
+								"\u041B\u043E\u0433\u0456\u043D \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456",
+								"\u0412\u0438\u0434\u0430\u043B\u0438\u0442\u0438",
+								"\u0420\u0435\u0434\u0430\u0433\u0443\u0432\u0430\u0442\u0438"
 							}
 						) {
 							Class[] columnTypes = new Class[] {
@@ -52,16 +56,16 @@ public class AccountsListController {
 								return this.columnTypes[columnIndex];
 							}
 						});
-					AccountsListController.this.window.table.getColumnModel().getColumn(0).setResizable(false);
-					AccountsListController.this.window.table.getColumnModel().getColumn(0).setPreferredWidth(40);
-					AccountsListController.this.window.table.getColumnModel().getColumn(1).setPreferredWidth(200);
-					AccountsListController.this.window.table.getColumnModel().getColumn(2).setPreferredWidth(100);
+					window.table.getColumnModel().getColumn(0).setResizable(false);
+					window.table.getColumnModel().getColumn(0).setPreferredWidth(40);
+					window.table.getColumnModel().getColumn(1).setPreferredWidth(200);
+					window.table.getColumnModel().getColumn(2).setPreferredWidth(100);
 					
-					AccountsListController.this.window.btnUpdate = new ButtonColumn(AccountsListController.this.window.table, new Action() {
+					window.btnUpdate = new ButtonColumn(window.table, new Action() {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							new AccountInfoController((AccountModel) AccountsListController.this.window.table.getModel().getValueAt(AccountsListController.this.window.table.getSelectedRow(), 1)).init();		
+							new AccountInfoController((AccountModel) window.table.getModel().getValueAt(window.table.getSelectedRow(), 1)).init();		
 						}
 						
 						@Override
@@ -83,12 +87,12 @@ public class AccountsListController {
 						public void addPropertyChangeListener(PropertyChangeListener listener) {}
 					}, 4);
 					
-					AccountsListController.this.window.btnDelete = new ButtonColumn(AccountsListController.this.window.table, new Action() {
+					window.btnDelete = new ButtonColumn(window.table, new Action() {
 						
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							try(AccountDAO dao = new AccountDAO()) {
-								dao.delete((AccountModel) AccountsListController.this.window.table.getModel().getValueAt(AccountsListController.this.window.table.getSelectedRow(), 1));
+								dao.delete((AccountModel) window.table.getModel().getValueAt(window.table.getSelectedRow(), 1));
 							}
 						}
 						
@@ -111,24 +115,24 @@ public class AccountsListController {
 						public void addPropertyChangeListener(PropertyChangeListener listener) { }
 					}, 3);
 					
-					AccountsListController.this.window.btnCreateNewAccount.addActionListener(new ActionListener() {
+					window.btnCreateNewAccount.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							new RegistrationController().init();
-							AccountsListController.this.window.setVisible(false);
-							AccountsListController.this.window.dispose();
+							window.setVisible(false);
+							window.dispose();
 						}
 					});
 					
-					AccountsListController.this.window.btnBack.addActionListener(new ActionListener() {
+					window.btnBack.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							AccountsListController.this.window.setVisible(false);
-							AccountsListController.this.window.dispose();
+							window.setVisible(false);
+							window.dispose();
 						}
 					});
 					
-					AccountsListController.this.window.setVisible(true);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -144,7 +148,7 @@ public class AccountsListController {
 		try(AccountDAO dao = new AccountDAO()) {
 			this.model.setAccountsList(dao.getAllAccounts());
 		}
-		logger.debug("AccountsList: ", this.model.getAccountsList());	
+		logger.debug("AccountsList: {}", this.model.getAccountsList());	
 		logger.trace("Returning from loadAccountsList()");
 	}
 	
@@ -158,8 +162,9 @@ public class AccountsListController {
 			objects[i][1] = accountList.get(i);
 			//objects[i][1] = (accountList.get(i).getLastName() + " " + accountList.get(i).getFirstName() + " " + accountList.get(i).getMiddleName());
 			objects[i][2] = accountList.get(i).getLogin();
+			
+			logger.debug("objects[{}]: {}", i, objects[i]);
 		}
-		
 		logger.trace("Returning from loadObjects()");
 		return objects;
 	}

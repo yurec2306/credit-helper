@@ -39,19 +39,19 @@ public class Step3IndividualController extends AbstractStepController {
 			@Override
 			public void run() {
 				try {
-					window = new Step3IndividualWindow();
-					setToWindow(model);
-					window.setVisible(true);
+					Step3IndividualController.this.window = new Step3IndividualWindow();
+					setToWindow(Step3IndividualController.this.model);
+					Step3IndividualController.this.window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				window.btnNext.addActionListener(new ActionListener() {
+				Step3IndividualController.this.window.btnNext.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						if (window.cbCreditHistory.getSelectedItem() == CreditHistory.BLACK_LIST) {
+						if (Step3IndividualController.this.window.cbCreditHistory.getSelectedItem() == CreditHistory.BLACK_LIST) {
 							new ErrorWindow("Клієнт знаходиться у чорному списку").setVisible(true);
-						} else if(Integer.parseInt(window.tfAge.getText()) < 20) {
+						} else if(Integer.parseInt(Step3IndividualController.this.window.tfAge.getText()) < 20) {
 							ErrorWindow error = new ErrorWindow("Клiенту має бути 20 років!");
 							error.setVisible(true);
 						} else if (setToModel()) {
@@ -61,11 +61,11 @@ public class Step3IndividualController extends AbstractStepController {
 								
 								logger.debug("rate[0] >= rate[1]");
 								
-								model.setRate(rate[0]);
+								Step3IndividualController.this.model.setRate(rate[0]);
 								
-								window.setVisible(false);
-								window.dispose();
-								Step4IndividualController step4 = new Step4IndividualController(model);
+								Step3IndividualController.this.window.setVisible(false);
+								Step3IndividualController.this.window.dispose();
+								Step4IndividualController step4 = new Step4IndividualController(Step3IndividualController.this.model);
 								step4.init();
 							} else {
 								
@@ -84,7 +84,7 @@ public class Step3IndividualController extends AbstractStepController {
 	}
 
 	private void setToWindow(IndividualModel model) {
-		logger.trace(String.format("Calling setToWindow(%s)", model));
+		logger.trace("Calling setToWindow({})", model);
 		
 		if (model.getPhoneNumber() != null) {
 			this.window.tfPhone.setText(model.getPhoneNumber());
@@ -98,7 +98,7 @@ public class Step3IndividualController extends AbstractStepController {
 			this.window.cbCreditHistory.setSelectedItem(model.getCreditHistory());
 		}
 		
-		logger.trace(String.format("Returning from setToWindow(%s)", model));
+		logger.trace("Returning from setToWindow({})", model);
 	}
 
 	private boolean setToModel() {
@@ -128,21 +128,26 @@ public class Step3IndividualController extends AbstractStepController {
 			logger.info("Some textFields are empty");
 			result = false;
 		}
-		logger.debug("result: ", result);
+		logger.debug("result: {}", result);
 		
 		logger.trace("Returning from setToModel()");
 		return result;
 	}
 
 	private float[] count() {
+		logger.trace("Calling count()");
+		
 		float[] result = null;
 		NeuralNetwork nn = new NeuralNetworkImpl();
 		NetworkHelper nh = new NetworkHelper();
 		try {
-			result = nn.run(nh.formToNeuron(model));
+			result = nn.run(nh.formToNeuron(this.model));
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 		}
+		
+		logger.debug("result: {}", result);
+		logger.trace("Returning from count()");
 		return result;
 	}
 

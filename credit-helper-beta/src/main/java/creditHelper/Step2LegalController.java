@@ -69,7 +69,7 @@ public class Step2LegalController extends AbstractLegalStepController {
 				model = tempModel;				
 			}
 			
-			logger.debug("model: ", model);
+			logger.debug("model: {}", model);
 			
 		} else {
 			result = false;

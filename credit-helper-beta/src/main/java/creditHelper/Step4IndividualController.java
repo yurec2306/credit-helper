@@ -25,8 +25,8 @@ public class Step4IndividualController extends AbstractStepController {
 
 	public Step4IndividualController(IndividualModel model) {
 		super(model);
-		logger.trace("Creating Step4IndividualController(%s)", model);
-		logger.trace("Returning from Step4IndividualController(%s)", model);
+		logger.trace("Calling Step4IndividualController({})", model);
+		logger.trace("Returning from Step4IndividualController({})", model);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class Step4IndividualController extends AbstractStepController {
 	}
 
 	public void setToModel(Step4IndividualWindow window) {
-		logger.trace("Calling setToModel()");
+		logger.trace("Calling setToModel({})", window);
 		
 		if (window.cbCreditType.getSelectedItem() == CreditType.SHORT_TERM) {
 			
@@ -87,11 +87,11 @@ public class Step4IndividualController extends AbstractStepController {
 		this.model.getLastCredit().setCreditSize(Double.parseDouble(window.tfCreditSize.getText()));
 		this.model.getLastCredit().setCreditLength(Double.parseDouble(window.tfCreditLength.getText()));
 		
-		logger.trace("Returning from setToModel()");
+		logger.trace("Returning from setToModel({})", window);
 	}
 	
 	public boolean checkValidness(IndividualModel model) {
-		logger.trace("Calling checkValidness()");
+		logger.trace("Calling checkValidness({})", model);
 		
 		double creditSize = model.getLastCredit().getCreditSize();
 		double creditRate = model.getLastCredit().getCreditRate();
@@ -103,20 +103,20 @@ public class Step4IndividualController extends AbstractStepController {
 		
 		boolean result = true;
 		
-		if (this.model.getLastCredit().getCreditType() == CreditType.SHORT_TERM) {
+		if (creditType == CreditType.SHORT_TERM) {
 			logger.trace("CreditType == SHORT_TERM");
 			
 			double percentCost = creditSize * creditRate * (creditLength + 1.0) / 24.0;
-			logger.debug("percentCost: ", percentCost);
+			logger.debug("percentCost: {}", percentCost);
 			
 			double sum = creditSize + percentCost;
-			logger.debug("sum: ", sum);
+			logger.debug("sum: {}", sum);
 			
 			double netIncome = monthlyIncome * 0.4; // чистый доход
-			logger.debug("netIncome: ", netIncome);
+			logger.debug("netIncome: {}", netIncome);
 			
 			double allNetIncome = netIncome * creditLength; // чистый доход за весь период
-			logger.debug("allNetIncome: ", allNetIncome);
+			logger.debug("allNetIncome: {}", allNetIncome);
 			
 			if (allNetIncome < sum) {
 				
@@ -152,7 +152,7 @@ public class Step4IndividualController extends AbstractStepController {
 				}
 			}
 		}
-		logger.trace("Returning from checkValidness()");
+		logger.trace("Returning from checkValidness({})", model);
 		return result;
 	}
 	
@@ -169,10 +169,10 @@ public class Step4IndividualController extends AbstractStepController {
 			error.setVisible(true);
 		}
 		double percentCost = (credit.getCreditSize() - credit.getDownPayment()) * credit.getCreditRate() * (credit.getCreditLength() + 1.0) / 24.0;
-		logger.debug("percentCost: ", percentCost);
+		logger.debug("percentCost: {}", percentCost);
 		
 		double sum = credit.getCreditSize() + percentCost;
-		logger.debug("sum: ", sum);
+		logger.debug("sum: {}", sum);
 		
 		if (sum < credit.getNetIncome()) {
 			
@@ -182,9 +182,9 @@ public class Step4IndividualController extends AbstractStepController {
 			ErrorWindow error = new ErrorWindow("Розмір чистого доходу на місяць (" + credit.getDownPayment() + " грн.) повинен дорівнювати або бути більше суми повернення (" + sum + " грн.)");
 			error.setVisible(true);
 		}
+		logger.debug("result: {}", result);
 		
-		logger.trace("Returning from calc(...)");
-		logger.debug("Returning: ", result);		
+		logger.trace("Returning from calc({}, {})", credit, downPaymentMinPercent);		
 		return result;
 	}
 }

@@ -19,14 +19,14 @@ public class AccountsListModel {
 
 	public ArrayList<AccountModel> getAccountsList() {
 		logger.trace("Calling getAccountsList()");
-		logger.debug("accountsList: ", accountsList);
+		logger.debug("accountsList: {}", this.accountsList);
 		logger.trace("Returning from getAccountsList()");
 		return this.accountsList;
 	}
 
 	public void setAccountsList(ArrayList<AccountModel> accountsList) {
 		logger.trace("Calling setAccountsList({})", accountsList);
-		logger.debug("accountsList: ", accountsList);
+		logger.debug("accountsList: {}", accountsList);
 		logger.trace("Returning from setAccountsList({})", accountsList);
 		this.accountsList = accountsList;
 	}

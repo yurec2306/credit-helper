@@ -32,16 +32,16 @@ public class Step7LegalController extends AbstractLegalStepController {
 			@Override
 			public void run() {
 				try {
-					Step7LegalController.this.window = new Step7LegalWindow();
-					Step7LegalController.this.window.setVisible(true);
+					window = new Step7LegalWindow();
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Step7LegalController.this.window.btnNext.addActionListener(new ActionListener() {
+				window.btnNext.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						Step7LegalController.this.window.setVisible(false);
-						Step7LegalController.this.window.dispose();
+						window.setVisible(false);
+						window.dispose();
 					}
 				});
 			}
@@ -50,7 +50,7 @@ public class Step7LegalController extends AbstractLegalStepController {
 		logger.trace("Returning from init()");
 	}
 	
-	private void saveModel(LegalModel model) {
+	private static void saveModel(LegalModel model) {
 		logger.trace("Calling saveModel(LegalModel model)");
 		
 		try(LegalModelDAO dao = new LegalModelDAO()) {

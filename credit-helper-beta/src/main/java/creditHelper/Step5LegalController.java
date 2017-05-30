@@ -17,8 +17,8 @@ public class Step5LegalController extends AbstractLegalStepController {
 	
 	public Step5LegalController(LegalModel model) {
 		super(model);
-		
-		logger.trace("Creating Step5LegalController");
+		logger.trace("Calling Step5LegalController({})", model);
+		logger.trace("Returning from Step5LegalController({})", model);
 	}
 
 	@Override
@@ -26,6 +26,7 @@ public class Step5LegalController extends AbstractLegalStepController {
 		logger.trace("Calling init()");
 		
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					window = new Step5LegalWindow();
@@ -34,6 +35,7 @@ public class Step5LegalController extends AbstractLegalStepController {
 					e.printStackTrace();
 				}
 				window.btnNext.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						setToModel(model);
 						window.setVisible(false);
@@ -49,7 +51,7 @@ public class Step5LegalController extends AbstractLegalStepController {
 	}
 
 	private void setToModel(LegalModel model) {
-		logger.trace("Calling setToModel(LegalModel model)");
+		logger.trace("Calling setToModel({})", model);
 		
 		model.getLastCredit().setCash(Double.parseDouble(window.tfCash.getText()));
 		model.getLastCredit().setCurrentLiabilities(Double.parseDouble(window.tfCorrentLiabilities.getText()));
@@ -61,9 +63,9 @@ public class Step5LegalController extends AbstractLegalStepController {
 		model.getLastCredit().setCapitalAndReservesAll(Double.parseDouble(window.tfCapitalAndReservesAll.getText()));
 		model.getLastCredit().setLongTermCommitment(Double.parseDouble(window.tfLongTermCommitment.getText()));	
 		this.model = model;
-		logger.debug("model: ", this.model);
+		logger.debug("model: {}", this.model);
 		
-		logger.trace("Returning from setToModel(...)");
+		logger.trace("Returning from setToModel({})", model);
 	}
 	
 }

@@ -18,8 +18,8 @@ public class Step5IndividualController extends AbstractStepController {
 
 	public Step5IndividualController(IndividualModel model) {
 		super(model);
-		
-		logger.trace("Creating Step5IndividualController");
+		logger.trace("Calling Step5IndividualController({})", model);
+		logger.trace("Returning from Step5IndividualController({})", model);
 	}
 
 	@Override

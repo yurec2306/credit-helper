@@ -14,17 +14,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableModel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import main.accounts.ButtonColumn;
+
 public class LegalProfileWindow extends JFrame {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(LegalProfileWindow.class);
-	
+
 	private static final long serialVersionUID = 5369476482293989580L;
-	
+
 	JLabel lblNewLabel;
 	JLabel lblNewLabel_1;
 	JLabel lblNewLabel_2;
@@ -44,10 +45,12 @@ public class LegalProfileWindow extends JFrame {
 	JLabel lblNewLabel_17;
 	JTable table;
 	JButton btnSave;
+	ButtonColumn btnReturn;
+	ButtonColumn btnNotReturn;
 
 	public LegalProfileWindow() {
 		logger.trace("Calling LegalProfileWindow()");
-		
+
 		setBounds(100, 100, 450, 485);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -57,31 +60,36 @@ public class LegalProfileWindow extends JFrame {
 		label.setFont(new Font("Tahoma", Font.BOLD, 16));
 		getContentPane().add(label, BorderLayout.NORTH);
 
-		JPanel pCenter = new JPanel();
+		JPanel pMid = new JPanel();
+		getContentPane().add(pMid, BorderLayout.CENTER);
+		pMid.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane(pCenter);
+		JPanel pCenter = new JPanel();
+		pMid.add(pCenter, BorderLayout.NORTH);
 		pCenter.setLayout(new GridLayout(18, 2));
 
-		JLabel lblName = new JLabel("\u041D\u0430\u0437\u0432\u0430 \u043E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0446\u0456\u0457");
+		JLabel lblName = new JLabel(
+				"\u041D\u0430\u0437\u0432\u0430 \u043E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0446\u0456\u0457");
 		pCenter.add(lblName);
 
 		this.lblNewLabel = new JLabel();
 		pCenter.add(this.lblNewLabel);
 
-		JLabel lblIPN = new JLabel("\u0406\u041F\u041D \u043E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0446\u0456\u0457");
+		JLabel lblIPN = new JLabel(
+				"\u0406\u041F\u041D \u043E\u0440\u0433\u0430\u043D\u0456\u0437\u0430\u0446\u0456\u0457");
 		pCenter.add(lblIPN);
 
 		this.lblNewLabel_1 = new JLabel();
 		pCenter.add(this.lblNewLabel_1);
 
-		JLabel lblEntranceReportingForm = new JLabel("\u0412\u0445\u0456\u0434\u043D\u0430 \u0444\u043E\u0440\u043C\u0430 \u0437\u0432\u0456\u0442\u043D\u043E\u0441\u0442\u0456");
+		JLabel lblEntranceReportingForm = new JLabel(
+				"\u0412\u0445\u0456\u0434\u043D\u0430 \u0444\u043E\u0440\u043C\u0430 \u0437\u0432\u0456\u0442\u043D\u043E\u0441\u0442\u0456");
 		pCenter.add(lblEntranceReportingForm);
 
 		this.lblNewLabel_2 = new JLabel();
 		pCenter.add(this.lblNewLabel_2);
 
-		JLabel lblAddress = new JLabel(
-				"\u0410\u0434\u0440\u0435\u0441\u0430");
+		JLabel lblAddress = new JLabel("\u0410\u0434\u0440\u0435\u0441\u0430");
 		pCenter.add(lblAddress);
 
 		this.lblNewLabel_3 = new JLabel();
@@ -106,8 +114,7 @@ public class LegalProfileWindow extends JFrame {
 		this.lblNewLabel_6 = new JLabel();
 		pCenter.add(this.lblNewLabel_6);
 
-		JLabel lblAccountant = new JLabel(
-				"\u0411\u0443\u0445\u0433\u0430\u043B\u0442\u0435\u0440");
+		JLabel lblAccountant = new JLabel("\u0411\u0443\u0445\u0433\u0430\u043B\u0442\u0435\u0440");
 		pCenter.add(lblAccountant);
 
 		this.lblNewLabel_7 = new JLabel();
@@ -133,69 +140,48 @@ public class LegalProfileWindow extends JFrame {
 		this.lblNewLabel_10 = new JLabel();
 		pCenter.add(this.lblNewLabel_10);
 
-		JLabel lblFax = new JLabel(
-				"\u0424\u0430\u043A\u0441");
+		JLabel lblFax = new JLabel("\u0424\u0430\u043A\u0441");
 		pCenter.add(lblFax);
 
 		this.lblNewLabel_11 = new JLabel();
 		pCenter.add(this.lblNewLabel_11);
 
-		this.table = new JTable();
-		this.table.setModel(new DefaultTableModel(new Object[][] { { null, null, null }, }, new String[] {
-				"\u0421\u0443\u043C\u0430 \u043A\u0440\u0435\u0434\u0438\u0442\u0443",
-				"\u0422\u0435\u0440\u043C\u0456\u043D \u043A\u0440\u0435\u0434\u0438\u0442\u0443",
-				"\u0421\u0442\u0430\u043D \u0432\u0438\u043F\u043B\u0430\u0442\u0438 \u043A\u0440\u0435\u0434\u0438\u0442\u0443" }) {
-			private static final long serialVersionUID = 5141917052083599332L;
-			Class<? extends Object>[] columnTypes = new Class<?>[] { String.class, String.class, JCreditStatusComboBox.class };
-
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				return this.columnTypes[columnIndex];
-			}
-
-			boolean[] columnEditables = new boolean[] { false, false, true };
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return this.columnEditables[column];
-			}
-		});
-		this.table.getColumnModel().getColumn(0).setPreferredWidth(90);
-		this.table.getColumnModel().getColumn(1).setPreferredWidth(99);
-		this.table.getColumnModel().getColumn(2).setPreferredWidth(134);
-		
-		JLabel lblEmail = new JLabel("\u0415\u043B\u0435\u043A\u0442\u0440\u043E\u043D\u043D\u0430 \u043F\u043E\u0448\u0442\u0430");
+		JLabel lblEmail = new JLabel(
+				"\u0415\u043B\u0435\u043A\u0442\u0440\u043E\u043D\u043D\u0430 \u043F\u043E\u0448\u0442\u0430");
 		pCenter.add(lblEmail);
-		
+
 		this.lblNewLabel_13 = new JLabel("");
 		pCenter.add(this.lblNewLabel_13);
-		
+
 		JLabel lblNACE = new JLabel("\u041A\u0412\u0415\u0414");
 		pCenter.add(lblNACE);
-		
+
 		this.lblNewLabel_14 = new JLabel("");
 		pCenter.add(this.lblNewLabel_14);
-		
+
 		JLabel lblUSREOU = new JLabel("\u0404\u0414\u0420\u041F\u041E\u0423");
 		pCenter.add(lblUSREOU);
-		
+
 		this.lblNewLabel_15 = new JLabel("");
 		pCenter.add(this.lblNewLabel_15);
-		
+
 		JLabel lblKOATUU = new JLabel("\u041A\u041E\u0410\u0422\u0423\u0423");
 		pCenter.add(lblKOATUU);
-		
+
 		this.lblNewLabel_16 = new JLabel("");
 		pCenter.add(this.lblNewLabel_16);
-		
-		JLabel lblCreditHistory = new JLabel("\u041A\u0440\u0435\u0434\u0438\u0442\u043D\u0430 \u0456\u0441\u0442\u043E\u0440\u0456\u044F");
+
+		JLabel lblCreditHistory = new JLabel(
+				"\u041A\u0440\u0435\u0434\u0438\u0442\u043D\u0430 \u0456\u0441\u0442\u043E\u0440\u0456\u044F");
 		pCenter.add(lblCreditHistory);
-		
+
 		this.lblNewLabel_17 = new JLabel("");
 		pCenter.add(this.lblNewLabel_17);
-		pCenter.add(this.table);
 
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		this.table = new JTable();
+
+		JScrollPane scrollPane = new JScrollPane(this.table);
+		pMid.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel pBottom = new JPanel();
 		getContentPane().add(pBottom, BorderLayout.SOUTH);
@@ -212,7 +198,7 @@ public class LegalProfileWindow extends JFrame {
 			}
 		});
 		pBottom.add(btnToMain);
-		
+
 		logger.trace("Returning from LegalProfileWindow()");
 	}
 

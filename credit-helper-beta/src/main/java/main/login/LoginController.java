@@ -22,7 +22,7 @@ public class LoginController {
 	private AccountModel model;
 	
 	public LoginController() {
-		logger.trace("Creating LoginController()");
+		logger.trace("Calling LoginController()");
 		logger.trace("Returning from LoginController()");
 	}
 
@@ -70,7 +70,7 @@ public class LoginController {
 		try(AccountDAO dao = new AccountDAO()) {
 			this.model = dao.getAccount(login, password);
 		}
-		logger.debug("Receiving: ", this.model);
+		logger.debug("Receiving: {}", this.model);
 		if (this.model == null) {
 			logger.trace("Returning from checkAccountData({}, {})", login, password);
 			return result;
@@ -78,7 +78,7 @@ public class LoginController {
 		if(this.model.getLogin().equals(login) && String.valueOf(this.model.getPassword()).equals(String.valueOf(password))) {
 			result = true;
 		}
-		logger.debug("result: ", result);
+		logger.debug("result: {}", result);
 		
 		logger.trace("Returning from checkAccountData({}, {})", login, password);
 		return result;

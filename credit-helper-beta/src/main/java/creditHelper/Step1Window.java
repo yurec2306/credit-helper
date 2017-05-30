@@ -57,6 +57,8 @@ public class Step1Window extends AbstractStepWindow {
 		
 		this.btnToMain = new JButton("\u041D\u0430 \u0433\u043E\u043B\u043E\u0432\u043D\u0443");
 		this.pBottom.add(this.btnToMain);
+		
+		logger.trace("Returning from Step1Window()");
 	}
 
 }

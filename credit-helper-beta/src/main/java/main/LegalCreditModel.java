@@ -80,7 +80,7 @@ public class LegalCreditModel implements Serializable {
 	private double longTermCommitment;
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -88,7 +88,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public CreditType getCreditType() {
-		return creditType;
+		return this.creditType;
 	}
 
 	public void setCreditType(CreditType creditType) {
@@ -96,7 +96,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCreditRate() {
-		return creditRate;
+		return this.creditRate;
 	}
 
 	public void setCreditRate(double creditRate) {
@@ -104,7 +104,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCreditSize() {
-		return creditSize;
+		return this.creditSize;
 	}
 
 	public void setCreditSize(double creditSize) {
@@ -112,7 +112,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCreditLength() {
-		return creditLength;
+		return this.creditLength;
 	}
 
 	public void setCreditLength(double creditLength) {
@@ -120,7 +120,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getProvision() {
-		return provision;
+		return this.provision;
 	}
 
 	public void setProvision(double provision) {
@@ -128,7 +128,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getDownPayment() {
-		return downPayment;
+		return this.downPayment;
 	}
 
 	public void setDownPayment(double downPayment) {
@@ -136,7 +136,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getNetIncome() {
-		return income;
+		return this.income;
 	}
 
 	public void setNetIncome(double netIncome) {
@@ -144,7 +144,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCosts() {
-		return costs;
+		return this.costs;
 	}
 
 	public void setCosts(double costs) {
@@ -152,7 +152,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getPercentCost() {
-		return percentCost;
+		return this.percentCost;
 	}
 
 	public void setPercentCost(double percentCost) {
@@ -160,7 +160,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public CreditStatus getCreditStatus() {
-		return creditStatus;
+		return this.creditStatus;
 	}
 
 	public void setCreditStatus(CreditStatus creditStatus) {
@@ -168,7 +168,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCash() {
-		return cash;
+		return this.cash;
 	}
 
 	public void setCash(double cash) {
@@ -176,7 +176,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCurrentLiabilities() {
-		return currentLiabilities;
+		return this.currentLiabilities;
 	}
 
 	public void setCurrentLiabilities(double currentLiabilities) {
@@ -184,7 +184,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getDeferredIncome() {
-		return deferredIncome;
+		return this.deferredIncome;
 	}
 
 	public void setDeferredIncome(double deferredIncome) {
@@ -192,7 +192,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getShortTermInvestments() {
-		return shortTermInvestments;
+		return this.shortTermInvestments;
 	}
 
 	public void setShortTermInvestments(double shortTermInvestments) {
@@ -200,7 +200,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getPayableFor12Months() {
-		return payableFor12Months;
+		return this.payableFor12Months;
 	}
 
 	public void setPayableFor12Months(double payableFor12Months) {
@@ -208,7 +208,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCurrentAssets() {
-		return currentAssets;
+		return this.currentAssets;
 	}
 
 	public void setCurrentAssets(double currentAssets) {
@@ -216,7 +216,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getReservesForFuturePayments() {
-		return reservesForFuturePayments;
+		return this.reservesForFuturePayments;
 	}
 
 	public void setReservesForFuturePayments(double reservesForFuturePayments) {
@@ -224,7 +224,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getCapitalAndReservesAll() {
-		return capitalAndReservesAll;
+		return this.capitalAndReservesAll;
 	}
 
 	public void setCapitalAndReservesAll(double capitalAndReservesAll) {
@@ -232,7 +232,7 @@ public class LegalCreditModel implements Serializable {
 	}
 
 	public double getLongTermCommitment() {
-		return longTermCommitment;
+		return this.longTermCommitment;
 	}
 
 	public void setLongTermCommitment(double longTermCommitment) {
@@ -243,7 +243,7 @@ public class LegalCreditModel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + this.id;
 		return result;
 	}
 
@@ -256,9 +256,22 @@ public class LegalCreditModel implements Serializable {
 		if (!(obj instanceof LegalCreditModel))
 			return false;
 		LegalCreditModel other = (LegalCreditModel) obj;
-		if (id != other.id)
+		if (this.id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "LegalCreditModel [id=" + this.id + ", creditType=" + this.creditType + ", creditRate=" + this.creditRate
+				+ ", creditSize=" + this.creditSize + ", creditLength=" + this.creditLength + ", provision=" + this.provision
+				+ ", downPayment=" + this.downPayment + ", income=" + this.income + ", costs=" + this.costs + ", percentCost="
+				+ this.percentCost + ", creditStatus=" + this.creditStatus + ", cash=" + this.cash + ", currentLiabilities="
+				+ this.currentLiabilities + ", deferredIncome=" + this.deferredIncome + ", shortTermInvestments="
+				+ this.shortTermInvestments + ", payableFor12Months=" + this.payableFor12Months + ", currentAssets="
+				+ this.currentAssets + ", reservesForFuturePayments=" + this.reservesForFuturePayments
+				+ ", capitalAndReservesAll=" + this.capitalAndReservesAll + ", longTermCommitment=" + this.longTermCommitment
+				+ "]";
 	}
 
 }

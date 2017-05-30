@@ -47,7 +47,7 @@ public class AccountModel implements Serializable {
 	private String email;
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -55,7 +55,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -63,7 +63,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public String getMiddleName() {
-		return middleName;
+		return this.middleName;
 	}
 
 	public void setMiddleName(String middleName) {
@@ -71,7 +71,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public String getPhone() {
-		return phone;
+		return this.phone;
 	}
 
 	public void setPhone(String phone) {
@@ -79,7 +79,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public String getBankNumber() {
-		return bankNumber;
+		return this.bankNumber;
 	}
 
 	public void setBankNumber(String bankNumber) {
@@ -87,7 +87,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public String getLogin() {
-		return login;
+		return this.login;
 	}
 
 	public void setLogin(String login) {
@@ -95,7 +95,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public char[] getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(char[] password) {
@@ -103,7 +103,7 @@ public class AccountModel implements Serializable {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -111,7 +111,7 @@ public class AccountModel implements Serializable {
 	}
 	
 	public UserType getUserType() {
-		return userType;
+		return this.userType;
 	}
 
 	public void setUserType(UserType userType) {
@@ -130,7 +130,7 @@ public class AccountModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 
@@ -138,9 +138,9 @@ public class AccountModel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + this.id;
+		result = prime * result + ((this.login == null) ? 0 : this.login.hashCode());
+		result = prime * result + ((this.password == null) ? 0 : this.password.hashCode());
 		return result;
 	}
 
@@ -153,27 +153,26 @@ public class AccountModel implements Serializable {
 		if (!(obj instanceof AccountModel))
 			return false;
 		AccountModel other = (AccountModel) obj;
-		if (id != other.id)
+		if (this.id != other.id)
 			return false;
-		if (login == null) {
+		if (this.login == null) {
 			if (other.login != null)
 				return false;
-		} else if (!login.equals(other.login))
+		} else if (!this.login.equals(other.login))
 			return false;
-		if (password == null) {
+		if (this.password == null) {
 			if (other.password != null)
 				return false;
-		} else if (!password.equals(other.password))
+		} else if (!this.password.equals(other.password))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "AccountModel [ login=" + login + ", id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", middleName="
-				+ middleName + ", userType=" + userType + "]";
-	}
-	
-	
+		return "AccountModel [id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName + ", middleName="
+				+ this.middleName + ", phone=" + this.phone + ", bankNumber=" + this.bankNumber + ", login=" + this.login + ", password="
+				+ this.password + ", userType=" + this.userType + ", email=" + this.email + "]";
+	}	
 	
 }

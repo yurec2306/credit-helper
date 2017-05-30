@@ -13,17 +13,17 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import main.accounts.ButtonColumn;
+
 public class IndividualProfileWindow extends JFrame {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(IndividualProfileWindow.class);
 
 	private static final long serialVersionUID = 4629428961649721253L;
-	
+
 	JLabel lblNewLabel;
 	JLabel lblNewLabel_1;
 	JLabel lblNewLabel_2;
@@ -37,12 +37,14 @@ public class IndividualProfileWindow extends JFrame {
 	JLabel lblNewLabel_10;
 	JLabel lblNewLabel_11;
 	JTable table;
+	ButtonColumn btnReturn;
+	ButtonColumn btnNotReturn;
 	JButton btnSave;
 
 	public IndividualProfileWindow() {
 		logger.trace("Calling IndividualProfileWindow()");
-		
-		setBounds(100, 100, 450, 400);
+
+		setBounds(100, 100, 600, 400);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
 		JLabel label = new JLabel(
@@ -51,10 +53,13 @@ public class IndividualProfileWindow extends JFrame {
 		label.setFont(new Font("Tahoma", Font.BOLD, 16));
 		getContentPane().add(label, BorderLayout.NORTH);
 
-		JPanel pCenter = new JPanel();
+		JPanel pMid = new JPanel();
+		getContentPane().add(pMid, BorderLayout.CENTER);
+		pMid.setLayout(new BorderLayout(0, 0));
 
-		JScrollPane scrollPane = new JScrollPane(pCenter);
-		pCenter.setLayout(new GridLayout(15, 2));
+		JPanel pCenter = new JPanel();
+		pMid.add(pCenter, BorderLayout.NORTH);
+		pCenter.setLayout(new GridLayout(12, 2));
 
 		JLabel lblLastName = new JLabel("\u041F\u0440\u0456\u0437\u0432\u0438\u0449\u0435");
 		pCenter.add(lblLastName);
@@ -135,31 +140,9 @@ public class IndividualProfileWindow extends JFrame {
 		pCenter.add(this.lblNewLabel_11);
 
 		this.table = new JTable();
-		this.table.setModel(new DefaultTableModel(new Object[][] { { null, null, null }, }, new String[] {
-				"\u0421\u0443\u043C\u0430 \u043A\u0440\u0435\u0434\u0438\u0442\u0443",
-				"\u0422\u0435\u0440\u043C\u0456\u043D \u043A\u0440\u0435\u0434\u0438\u0442\u0443",
-				"\u0421\u0442\u0430\u043D \u0432\u0438\u043F\u043B\u0430\u0442\u0438 \u043A\u0440\u0435\u0434\u0438\u0442\u0443" }) {
-			private static final long serialVersionUID = 5141917052083599332L;
-			Class<? extends Object>[] columnTypes = new Class<?>[] { String.class, String.class, JCreditStatusComboBox.class };
-
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				return this.columnTypes[columnIndex];
-			}
-
-			boolean[] columnEditables = new boolean[] { false, false, true };
-
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return this.columnEditables[column];
-			}
-		});
-		this.table.getColumnModel().getColumn(0).setPreferredWidth(90);
-		this.table.getColumnModel().getColumn(1).setPreferredWidth(99);
-		this.table.getColumnModel().getColumn(2).setPreferredWidth(134);
-		pCenter.add(this.table);
-
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
+		
+		JScrollPane scrollPane = new JScrollPane(this.table);
+		pMid.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel pBottom = new JPanel();
 		getContentPane().add(pBottom, BorderLayout.SOUTH);
@@ -176,7 +159,7 @@ public class IndividualProfileWindow extends JFrame {
 			}
 		});
 		pBottom.add(btnToMain);
-		
+
 		logger.trace("Returning from IndividualProfileWindow()");
 	}
 

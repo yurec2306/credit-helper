@@ -17,8 +17,8 @@ public class Step4LegalController extends AbstractLegalStepController {
 
 	public Step4LegalController(LegalModel model) {
 		super(model);
-		
-		logger.trace("Creating Step4LegalController");
+		logger.trace("Calling Step4LegalController({})", model);
+		logger.trace("Returning from Step4LegalController({})", model);
 	}
 
 	@Override
@@ -26,6 +26,7 @@ public class Step4LegalController extends AbstractLegalStepController {
 		logger.trace("Calling init()");
 		
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					window = new Step4LegalWindow();
@@ -34,6 +35,7 @@ public class Step4LegalController extends AbstractLegalStepController {
 					e.printStackTrace();
 				}
 				window.btnNext.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						setToModel(model);
 						window.setVisible(false);
@@ -49,7 +51,7 @@ public class Step4LegalController extends AbstractLegalStepController {
 	}
 
 	private void setToModel(LegalModel model) {
-		logger.trace("Calling setToModel(LegalModel model)");
+		logger.trace("Calling setToModel({})", model);
 		
 		model.getLastCredit().setDownPayment(Double.parseDouble(window.tfDownPayment.getText()));
 		model.getLastCredit().setProvision(Double.parseDouble(window.tfProvision.getText()));
@@ -59,9 +61,9 @@ public class Step4LegalController extends AbstractLegalStepController {
 		model.getLastCredit().setCosts(Double.parseDouble(window.tfCosts.getText()));
 		model.getLastCredit().setCreditRate(0.25); //25%
 		this.model = model;
-		logger.debug("model: ", this.model);
+		logger.debug("model: {}", this.model);
 		
-		logger.trace("Returning from setToModel(...)");
+		logger.trace("Returning from setToModel({})", model);
 	}
 
 }

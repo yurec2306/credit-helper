@@ -19,8 +19,8 @@ public class Step3LegalController extends AbstractLegalStepController {
 
 	public Step3LegalController(LegalModel model) {
 		super(model);
-		logger.trace("Creating Step3LegalController(%3)", model);
-		logger.trace("Returning from Step3LegalController(%3)", model);
+		logger.trace("Creating Step3LegalController({})", model);
+		logger.trace("Returning from Step3LegalController({})", model);
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public class Step3LegalController extends AbstractLegalStepController {
 	}
 
 	protected void setToWindow(LegalModel model) {
-		logger.trace(String.format("Calling setToWindow(%s)", model));
+		logger.trace("Calling setToWindow({})", model);
 		
 		if (model.getOrganizationTIN() != null) {
 			logger.trace("Setting to TextFields");
@@ -81,7 +81,7 @@ public class Step3LegalController extends AbstractLegalStepController {
 			model.setCreditHistory((CreditHistory) this.window.cbCreditHistory.getSelectedItem());
 		}
 		
-		logger.trace(String.format("Returning from setToWindow(%s)", model));
+		logger.trace("Returning from setToWindow({})", model);
 	}
 
 	private boolean setToModel() {
@@ -104,7 +104,7 @@ public class Step3LegalController extends AbstractLegalStepController {
 			this.window.tfUSREOU.getText().isEmpty()                ||
 			this.window.tfKOATUU.getText().isEmpty())               ) {
 			
-			logger.trace("Seting data to model");
+			logger.trace("Setting data to model");
 			
 			this.model.setOrganizationTIN(this.window.tfOrganizationTIN.getText());
 			this.model.setEntranceReportingForm(this.window.tfEntranceReportingForm.getText());
@@ -128,7 +128,7 @@ public class Step3LegalController extends AbstractLegalStepController {
 			
 			result = false;
 		}
-		logger.debug("result: ", result);
+		logger.debug("result: {}", result);
 		
 		logger.trace("Returning from setToModel()");
 		return result;

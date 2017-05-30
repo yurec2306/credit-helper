@@ -60,7 +60,7 @@ public class CreditModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 	
@@ -77,12 +77,12 @@ public class CreditModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -90,7 +90,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public CreditType getCreditType() {
-		return creditType;
+		return this.creditType;
 	}
 
 	public void setCreditType(CreditType creditType) {
@@ -98,7 +98,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getCreditRate() {
-		return creditRate;
+		return this.creditRate;
 	}
 
 	public void setCreditRate(double creditRate) {
@@ -106,7 +106,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getCreditSize() {
-		return creditSize;
+		return this.creditSize;
 	}
 
 	public void setCreditSize(double creditSize) {
@@ -114,7 +114,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getCreditLength() {
-		return creditLength;
+		return this.creditLength;
 	}
 
 	public void setCreditLength(double creditLength) {
@@ -122,7 +122,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getProvision() {
-		return provision;
+		return this.provision;
 	}
 
 	public void setProvision(double provision) {
@@ -130,7 +130,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getDownPayment() {
-		return downPayment;
+		return this.downPayment;
 	}
 
 	public void setDownPayment(double downPayment) {
@@ -138,7 +138,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getNetIncome() {
-		return netIncome;
+		return this.netIncome;
 	}
 
 	public void setNetIncome(double netIncome) {
@@ -146,7 +146,7 @@ public class CreditModel implements Serializable {
 	}
 
 	public double getPercentCost() {
-		return percentCost;
+		return this.percentCost;
 	}
 
 	public void setPercentCost(double percentCost) {
@@ -154,7 +154,7 @@ public class CreditModel implements Serializable {
 	}
 	
 	public CreditStatus getCreditStatus() {
-		return creditStatus;
+		return this.creditStatus;
 	}
 
 	public void setCreditStatus(CreditStatus creditStatus) {
@@ -165,7 +165,7 @@ public class CreditModel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + this.id;
 		return result;
 	}
 
@@ -178,9 +178,17 @@ public class CreditModel implements Serializable {
 		if (!(obj instanceof CreditModel))
 			return false;
 		CreditModel other = (CreditModel) obj;
-		if (id != other.id)
+		if (this.id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CreditModel [id=" + this.id + ", creditType=" + this.creditType + ", creditRate=" + this.creditRate + ", creditSize="
+				+ this.creditSize + ", creditLength=" + this.creditLength + ", provision=" + this.provision + ", downPayment="
+				+ this.downPayment + ", netIncome=" + this.netIncome + ", percentCost=" + this.percentCost + ", creditStatus="
+				+ this.creditStatus + "]";
 	}
 
 }

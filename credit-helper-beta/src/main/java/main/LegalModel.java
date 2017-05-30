@@ -76,7 +76,7 @@ public class LegalModel implements Serializable {
 	private double rate;
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -84,7 +84,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getOrganizationName() {
-		return organizationName;
+		return this.organizationName;
 	}
 
 	public void setOrganizationName(String organizationName) {
@@ -92,7 +92,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getOrganizationTIN() {
-		return organizationTIN;
+		return this.organizationTIN;
 	}
 
 	public void setOrganizationTIN(String organizationTIN) {
@@ -100,7 +100,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getEntranceReportingForm() {
-		return entranceReportingForm;
+		return this.entranceReportingForm;
 	}
 
 	public void setEntranceReportingForm(String entranceReportingForm) {
@@ -108,7 +108,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getAddress() {
-		return address;
+		return this.address;
 	}
 
 	public void setAddress(String address) {
@@ -116,7 +116,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getBranch() {
-		return branch;
+		return this.branch;
 	}
 
 	public void setBranch(String branch) {
@@ -124,7 +124,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getDirector() {
-		return director;
+		return this.director;
 	}
 
 	public void setDirector(String director) {
@@ -132,7 +132,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getDirectorPhone() {
-		return directorPhone;
+		return this.directorPhone;
 	}
 
 	public void setDirectorPhone(String directorPhone) {
@@ -140,7 +140,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getAccountant() {
-		return accountant;
+		return this.accountant;
 	}
 
 	public void setAccountant(String accountant) {
@@ -148,7 +148,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getAccountantPhone() {
-		return accountantPhone;
+		return this.accountantPhone;
 	}
 
 	public void setAccountantPhone(String accountantPhone) {
@@ -156,7 +156,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getContactPerson() {
-		return contactPerson;
+		return this.contactPerson;
 	}
 
 	public void setContactPerson(String contactPerson) {
@@ -164,7 +164,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getContactPersonPhone() {
-		return contactPersonPhone;
+		return this.contactPersonPhone;
 	}
 
 	public void setContactPersonPhone(String contactPersonPhone) {
@@ -172,7 +172,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getFax() {
-		return fax;
+		return this.fax;
 	}
 
 	public void setFax(String fax) {
@@ -180,7 +180,7 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -188,31 +188,31 @@ public class LegalModel implements Serializable {
 	}
 
 	public String getNACE() {
-		return NACE;
+		return this.NACE;
 	}
 
 	public void setNACE(String nACE) {
-		NACE = nACE;
+		this.NACE = nACE;
 	}
 
 	public String getUSREOU() {
-		return USREOU;
+		return this.USREOU;
 	}
 
 	public void setUSREOU(String uSREOU) {
-		USREOU = uSREOU;
+		this.USREOU = uSREOU;
 	}
 
 	public String getKOATUU() {
-		return KOATUU;
+		return this.KOATUU;
 	}
 
 	public void setKOATUU(String kOATUU) {
-		KOATUU = kOATUU;
+		this.KOATUU = kOATUU;
 	}
 
 	public CreditHistory getCreditHistory() {
-		return creditHistory;
+		return this.creditHistory;
 	}
 
 	public void setCreditHistory(CreditHistory creditHistory) {
@@ -220,7 +220,7 @@ public class LegalModel implements Serializable {
 	}
 	
 	public List<LegalCreditModel> getCredits() {
-		return credits;
+		return this.credits;
 	}
 
 	public void setCredits(List<LegalCreditModel> credits) {
@@ -228,11 +228,11 @@ public class LegalModel implements Serializable {
 	}
 	
 	public LegalCreditModel getLastCredit() {
-		return credits.get(credits.size()-1);
+		return this.credits.get(this.credits.size()-1);
 	}
 
 	public double getRate() {
-		return rate;
+		return this.rate;
 	}
 
 	public void setRate(double rate) {
@@ -243,8 +243,8 @@ public class LegalModel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
-		result = prime * result + ((organizationName == null) ? 0 : organizationName.hashCode());
+		result = prime * result + this.id;
+		result = prime * result + ((this.organizationName == null) ? 0 : this.organizationName.hashCode());
 		return result;
 	}
 
@@ -257,14 +257,25 @@ public class LegalModel implements Serializable {
 		if (!(obj instanceof LegalModel))
 			return false;
 		LegalModel other = (LegalModel) obj;
-		if (id != other.id)
+		if (this.id != other.id)
 			return false;
-		if (organizationName == null) {
+		if (this.organizationName == null) {
 			if (other.organizationName != null)
 				return false;
-		} else if (!organizationName.equals(other.organizationName))
+		} else if (!this.organizationName.equals(other.organizationName))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "LegalModel [id=" + this.id + ", organizationName=" + this.organizationName + ", organizationTIN="
+				+ this.organizationTIN + ", entranceReportingForm=" + this.entranceReportingForm + ", address=" + this.address
+				+ ", branch=" + this.branch + ", director=" + this.director + ", directorPhone=" + this.directorPhone + ", accountant="
+				+ this.accountant + ", accountantPhone=" + this.accountantPhone + ", contactPerson=" + this.contactPerson
+				+ ", contactPersonPhone=" + this.contactPersonPhone + ", fax=" + this.fax + ", email=" + this.email + ", NACE=" + this.NACE
+				+ ", USREOU=" + this.USREOU + ", KOATUU=" + this.KOATUU + ", creditHistory=" + this.creditHistory + ", credits="
+				+ this.credits + ", rate=" + this.rate + "]";
 	}
 	
 }

@@ -71,7 +71,7 @@ public class IndividualModel implements Serializable {
 	private double rate;
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
@@ -79,7 +79,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -87,7 +87,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
@@ -95,7 +95,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public String getMiddleName() {
-		return middleName;
+		return this.middleName;
 	}
 
 	public void setMiddleName(String middleName) {
@@ -103,7 +103,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return this.phoneNumber;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
@@ -111,15 +111,15 @@ public class IndividualModel implements Serializable {
 	}
 
 	public String getTIN() {
-		return TIN;
+		return this.TIN;
 	}
 
 	public void setTIN(String tIN) {
-		TIN = tIN;
+		this.TIN = tIN;
 	}
 
 	public int getAge() {
-		return age;
+		return this.age;
 	}
 
 	public void setAge(int age) {
@@ -127,7 +127,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public MaritialStatus getMaritialStatus() {
-		return maritialStatus;
+		return this.maritialStatus;
 	}
 
 	public void setMaritialStatus(MaritialStatus maritialStatus) {
@@ -135,7 +135,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public int getChildrenNum() {
-		return childrenNum;
+		return this.childrenNum;
 	}
 
 	public void setChildrenNum(int childrenNum) {
@@ -143,7 +143,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public FieldOfActivity getFieldOfActivity() {
-		return fieldOfActivity;
+		return this.fieldOfActivity;
 	}
 
 	public void setFieldOfActivity(FieldOfActivity fieldOfActivity) {
@@ -151,7 +151,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public Qualification getQualification() {
-		return qualification;
+		return this.qualification;
 	}
 
 	public void setQualification(Qualification qualification) {
@@ -159,7 +159,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public int getYearsOfWorkExperience() {
-		return yearsOfWorkExperience;
+		return this.yearsOfWorkExperience;
 	}
 
 	public void setYearsOfWorkExperience(int yearsOfWorkExperience) {
@@ -167,7 +167,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public CreditHistory getCreditHistory() {
-		return creditHistory;
+		return this.creditHistory;
 	}
 
 	public void setCreditHistory(CreditHistory creditHistory) {
@@ -175,7 +175,7 @@ public class IndividualModel implements Serializable {
 	}
 
 	public double getMonthlyIncome() {
-		return monthlyIncome;
+		return this.monthlyIncome;
 	}
 
 	public void setMonthlyIncome(double monthlyIncome) {
@@ -183,7 +183,7 @@ public class IndividualModel implements Serializable {
 	}
 	
 	public List<CreditModel> getCredits() {
-		return credits;
+		return this.credits;
 	}
 
 	public void setCredits(List<CreditModel> credits) {
@@ -191,11 +191,11 @@ public class IndividualModel implements Serializable {
 	}
 	
 	public CreditModel getLastCredit() {
-		return credits.get(credits.size()-1);
+		return this.credits.get(this.credits.size()-1);
 	}
 
 	public double getRate() {
-		return rate;
+		return this.rate;
 	}
 
 	public void setRate(double rate) {
@@ -217,7 +217,7 @@ public class IndividualModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 
@@ -232,7 +232,7 @@ public class IndividualModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 
@@ -251,7 +251,7 @@ public class IndividualModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 	
@@ -269,7 +269,7 @@ public class IndividualModel implements Serializable {
 
 		@Override
 		public String toString() {
-			return name;
+			return this.name;
 		}
 	}
 
@@ -277,7 +277,7 @@ public class IndividualModel implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + id;
+		result = prime * result + this.id;
 		return result;
 	}
 
@@ -290,8 +290,18 @@ public class IndividualModel implements Serializable {
 		if (!(obj instanceof IndividualModel))
 			return false;
 		IndividualModel other = (IndividualModel) obj;
-		if (id != other.id)
+		if (this.id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "IndividualModel [id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName + ", middleName="
+				+ this.middleName + ", phoneNumber=" + this.phoneNumber + ", TIN=" + this.TIN + ", age=" + this.age + ", maritialStatus="
+				+ this.maritialStatus + ", childrenNum=" + this.childrenNum + ", fieldOfActivity=" + this.fieldOfActivity
+				+ ", qualification=" + this.qualification + ", yearsOfWorkExperience=" + this.yearsOfWorkExperience
+				+ ", creditHistory=" + this.creditHistory + ", monthlyIncome=" + this.monthlyIncome + ", credits=" + this.credits
+				+ ", rate=" + this.rate + "]";
 	}
 }

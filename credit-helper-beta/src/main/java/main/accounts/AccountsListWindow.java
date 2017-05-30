@@ -12,6 +12,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,7 +36,7 @@ public class AccountsListWindow extends JFrame {
 		
 		setTitle("\u041A\u043E\u0440\u0438\u0441\u0442\u0443\u0432\u0430\u0447\u0456 \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456");
 		setBounds(100, 100, 711, 518);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);

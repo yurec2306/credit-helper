@@ -56,7 +56,7 @@ public class IndividualModelDAO implements AutoCloseable {
 	}
 	
 	public IndividualModel getModel(String lastName, String firstName, String middleName) {
-		logger.trace("Calling getModel(%s, %s, %s)", lastName, firstName, middleName);
+		logger.trace("Calling getModel({}, {}, {})", lastName, firstName, middleName);
 		
 		Session session = this.sessionFactory.openSession();
 		session.beginTransaction();
@@ -68,9 +68,9 @@ public class IndividualModelDAO implements AutoCloseable {
 		session.getTransaction().commit();
 		session.close();
 		
-		logger.debug("model: ", model);
+		logger.debug("model: {}", model);
 		
-		logger.trace("Returning from getModel(%s, %s, %s)", lastName, firstName, middleName);
+		logger.trace("Returning from getModel({}, {}, {})", lastName, firstName, middleName);
 		return model;
 	}
 	
@@ -84,7 +84,7 @@ public class IndividualModelDAO implements AutoCloseable {
 		session.getTransaction().commit();
 		session.close();
 		
-		logger.debug("models: ", models);
+		logger.debug("models: {}", models);
 		
 		logger.trace("Returning from getAllModels()");
 		return models;
@@ -93,7 +93,6 @@ public class IndividualModelDAO implements AutoCloseable {
 	@Override
 	public void close() {
 		logger.trace("Calling close()");
-		logger.debug("Closing sessionFactory");
 		this.sessionFactory.close();	
 		logger.trace("Returning from close()");	
 	}

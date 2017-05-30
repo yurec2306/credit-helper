@@ -22,7 +22,7 @@ public class AccountInfoController {
 	private boolean isAccountInfoChanged = false;
 	
 	public AccountInfoController(AccountModel model) {
-		logger.trace("Creating AccountInfoController({})", model);
+		logger.trace("Calling AccountInfoController({})", model);
 		this.model = model;
 		logger.trace("Returning from AccountInfoController({})", model);
 	}
@@ -34,8 +34,8 @@ public class AccountInfoController {
 			@Override
 			public void run() {
 				try {
-					AccountInfoController.this.window = new AccountInfoWindow();
-					AccountInfoController.this.window.tfLastName.addFocusListener(new FocusAdapter() {
+					window = new AccountInfoWindow();
+					window.tfLastName.addFocusListener(new FocusAdapter() {
 						private String text;
 						@Override
 						public void focusGained(FocusEvent e) {
@@ -44,25 +44,25 @@ public class AccountInfoController {
 						@Override
 						public void focusLost(FocusEvent e) {
 							if (!((JTextField) e.getSource()).getText().equals(this.text)) {
-								AccountInfoController.this.isAccountInfoChanged = true;
+								isAccountInfoChanged = true;
 							}
 						}
 					});
-					AccountInfoController.this.window.btnNext.addActionListener(new ActionListener() {
+					window.btnNext.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							if (!AccountInfoController.this.isAccountInfoChanged)
+							if (!isAccountInfoChanged)
 								return;
-							setToModel(AccountInfoController.this.model);
+							setToModel(model);
 							try(AccountDAO dao = new AccountDAO()) {
-								dao.saveOrUpdate(AccountInfoController.this.model);
+								dao.saveOrUpdate(model);
 							}
-							AccountInfoController.this.window.setVisible(false);
-							AccountInfoController.this.window.dispose();
+							window.setVisible(false);
+							window.dispose();
 						}
 					});
-					setToWindow(AccountInfoController.this.model);
-					AccountInfoController.this.window.setVisible(true);
+					setToWindow(model);
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

@@ -20,8 +20,8 @@ public class Step6LegalController extends AbstractLegalStepController {
 	
 	public Step6LegalController(LegalModel model) {
 		super(model);
-		
-		logger.trace("Creating Step6LegalController");
+		logger.trace("Calling Step6LegalController({})", model);
+		logger.trace("Returning from Step6LegalController({})", model);
 	}
 
 	@Override
@@ -32,20 +32,20 @@ public class Step6LegalController extends AbstractLegalStepController {
 			@Override
 			public void run() {
 				try {
-					Step6LegalController.this.window = new Step6LegalWindow();
-					calcCategory(Step6LegalController.this.model.getLastCredit());
-					Step6LegalController.this.window.setVisible(true);
+					window = new Step6LegalWindow();
+					calcCategory(model.getLastCredit());
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Step6LegalController.this.window.btnNext.addActionListener(new ActionListener() {
+				window.btnNext.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						if (isCreditReady(Step6LegalController.this.model.getLastCredit(), Step6LegalController.this.status)) {
-							Step6LegalController.this.window.setVisible(false);
-							Step7LegalController step7 = new Step7LegalController(Step6LegalController.this.model);
+						if (isCreditReady(model.getLastCredit(), status)) {
+							window.setVisible(false);
+							Step7LegalController step7 = new Step7LegalController(model);
 							step7.init();
-							Step6LegalController.this.window.dispose();
+							window.dispose();
 						}
 					}
 				});
@@ -56,7 +56,7 @@ public class Step6LegalController extends AbstractLegalStepController {
 	}
 
 	private void calcCategory(LegalCreditModel credit) {
-		logger.trace("Calling calcCategory(LegalCreditModel credit)");
+		logger.trace("Calling calcCategory({})", credit);
 		
 		double cash = credit.getCash();
 		double currentLiabilities = credit.getCurrentLiabilities();
@@ -71,31 +71,31 @@ public class Step6LegalController extends AbstractLegalStepController {
 		double costs = credit.getCosts();
 		
 		double k1 = cash / (currentLiabilities - defferedIncome - reservesForFuturePayments);
-		logger.debug("k1: ", k1);
+		logger.debug("k1: {}", k1);
 		
 		double k2 = (cash +	shortTermInvest + payableFor12Months) / (currentLiabilities - defferedIncome - reservesForFuturePayments);
-		logger.debug("k2: ", k2);
+		logger.debug("k2: {}", k2);
 		
 		double k3 = currentAssets / (currentLiabilities - defferedIncome - reservesForFuturePayments);
-		logger.debug("k3: ", k3);
+		logger.debug("k3: {}", k3);
 		
 		double k4 = capitalAndReservesAll / (longTermCommitment - currentLiabilities - defferedIncome - reservesForFuturePayments);
-		logger.debug("k4: ", k4);
+		logger.debug("k4: {}", k4);
 		
 		double k5 =  netIncome / costs;
-		logger.debug("k5: ", k5);
+		logger.debug("k5: {}", k5);
 		
 		setToWindow(k1, k2, k3, k4, k5);
 		
 		double sum = 0.11 * k1 + 0.05 * k2 + 0.42 * k3 + 0.21 * k4 + 0.21 * k5;
-		logger.debug("sum: ", sum);
+		logger.debug("sum: {}", sum);
 		
 		calcStatus(sum);
-		logger.trace("Returning from calcCategory(...)");
+		logger.trace("Returning from calcCategory({})", credit);
 	}
 	
 	private void setToWindow(double k1, double k2, double k3, double k4, double k5) {
-		logger.trace("Calling setToWindow(double k1, double k2, double k3, double k4, double k5)");
+		logger.trace("Calling setToWindow({}, {}, {}, {}, {})", k1, k2, k3, k4, k5);
 		
 		this.window.tfAbsoluteLiquidityRatio.setText(String.valueOf(k1));
 		this.window.tfCriticalEvaluationFactor.setText(String.valueOf(k2));
@@ -103,11 +103,11 @@ public class Step6LegalController extends AbstractLegalStepController {
 		this.window.tfTheRatioOfFunds.setText(String.valueOf(k4));
 		this.window.tfProfitability.setText(String.valueOf(k5));
 		
-		logger.trace("Returning from setToWindow(...)");
+		logger.trace("Returning from setToWindow({}, {}, {}, {}, {})", k1, k2, k3, k4, k5);
 	}
 
 	private void calcStatus(double s) {
-		logger.trace("Calling calcStatus(double s)");
+		logger.trace("Calling calcStatus({})", s);
 		
 		if(1 < s && s < 1.05) {
 			this.status = 1;	
@@ -118,11 +118,11 @@ public class Step6LegalController extends AbstractLegalStepController {
 		}
 		logger.debug("status:", this.status);
 		
-		logger.trace("Returning from calcStatus(...)");
+		logger.trace("Returning from calcStatus({})", s);
 	}
 	
 	private boolean isCreditReady(LegalCreditModel credit, int status) {
-		logger.trace("Creating isCreditReady(LegalCreditModel credit, int status)");
+		logger.trace("Calling isCreditReady({}, {})", credit, status);
 		
 		double creditSize = credit.getCreditSize();
 		double creditRate = credit.getCreditRate();
@@ -159,43 +159,44 @@ public class Step6LegalController extends AbstractLegalStepController {
 				ErrorWindow error = new ErrorWindow("Розмір забезпечення (" + creditProvision + ") повинен бути більше подвійного чистого доходу (" + allNetIncome * 2.0 + " грн.)");
 				error.setVisible(true);
 			}
+			break;
 		}
 		
-		logger.trace("Returning from isCreditReady(...)");
-		logger.debug("Returning: ", result);
+		logger.debug("result: {}", result);	
+		logger.trace("Returning from isCreditReady({}, {})", credit, status);
 		return result;
 	}
 
-	private double calcSum(double creditSize, double percentCost) {
-		logger.trace("Creating calcSum(double creditSize, double percentCost)");
+	private static double calcSum(double creditSize, double percentCost) {
+		logger.trace("Calling calcSum({}, {})", creditSize, percentCost);
 		
 		double result = creditSize + percentCost;
 		
-		logger.trace("Returning from calcSum(...)");
-		logger.debug("Returning: ", result);
+		logger.debug("result: {}", result);
+		logger.trace("Returning from calcSum({}, {})", creditSize, percentCost);
 		return result;
 	}
 
-	private double calcPercentCost(double creditSize, double creditRate, double creditLength) {
-		logger.trace("Creating calcPercentCost(double creditSize, double creditRate, double creditLength)");
+	private static double calcPercentCost(double creditSize, double creditRate, double creditLength) {
+		logger.trace("Calling calcPercentCost({}, {}, {})", creditSize, creditRate, creditLength);
 		
 		double result = creditSize * creditRate * (creditLength + 1.0) / 24.0;
 		
-		logger.trace("Returning from calcPercentCost(...)");
-		logger.debug("Returning: ", result);
+		logger.debug("result: {}", result);
+		logger.trace("Returning from calcPercentCost({}, {}, {})", creditSize, creditRate, creditLength);
 		return result;
 	}
 	
-	private double calcAllNetIncome(double provision, double costs, double creditLength) {
-		logger.trace("Creating calcAllNetIncome(double provision, double costs, double creditLength)");
+	private static double calcAllNetIncome(double provision, double costs, double creditLength) {
+		logger.trace("Calling calcAllNetIncome({}, {}, {})", provision, costs, creditLength);
 		
 		double netIncome = (provision - costs) * 0.8 * 0.8; // чистый доход
-		logger.debug("netIncome: ", netIncome);
+		logger.debug("netIncome: {}", netIncome);
 		
 		double allNetIncome = netIncome * Math.ceil(creditLength / 12.0); // чистый доход за весь период
+		logger.debug("allNetIncome: {}", allNetIncome);
 		
-		logger.trace("Returning from calcAllNetIncome(...)");
-		logger.debug("Returning: ", allNetIncome);
+		logger.trace("Returning from calcAllNetIncome({}, {}, {})", provision, costs, creditLength);
 		return allNetIncome;
 	}
 
