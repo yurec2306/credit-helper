@@ -29,21 +29,23 @@ public class Step6LegalController extends AbstractLegalStepController {
 		logger.trace("Calling init()");
 		
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
-					window = new Step6LegalWindow();
-					calcCategory(model.getLastCredit());
-					window.setVisible(true);
+					Step6LegalController.this.window = new Step6LegalWindow();
+					calcCategory(Step6LegalController.this.model.getLastCredit());
+					Step6LegalController.this.window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				window.btnNext.addActionListener(new ActionListener() {
+				Step6LegalController.this.window.btnNext.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						if (isCreditReady(model.getLastCredit(), status)) {
-							window.setVisible(false);
-							Step7LegalController step7 = new Step7LegalController(model);
+						if (isCreditReady(Step6LegalController.this.model.getLastCredit(), Step6LegalController.this.status)) {
+							Step6LegalController.this.window.setVisible(false);
+							Step7LegalController step7 = new Step7LegalController(Step6LegalController.this.model);
 							step7.init();
-							window.dispose();
+							Step6LegalController.this.window.dispose();
 						}
 					}
 				});
@@ -95,11 +97,11 @@ public class Step6LegalController extends AbstractLegalStepController {
 	private void setToWindow(double k1, double k2, double k3, double k4, double k5) {
 		logger.trace("Calling setToWindow(double k1, double k2, double k3, double k4, double k5)");
 		
-		window.tfAbsoluteLiquidityRatio.setText(String.valueOf(k1));
-		window.tfCriticalEvaluationFactor.setText(String.valueOf(k2));
-		window.tfCurrentRatio.setText(String.valueOf(k3));
-		window.tfTheRatioOfFunds.setText(String.valueOf(k4));
-		window.tfProfitability.setText(String.valueOf(k5));
+		this.window.tfAbsoluteLiquidityRatio.setText(String.valueOf(k1));
+		this.window.tfCriticalEvaluationFactor.setText(String.valueOf(k2));
+		this.window.tfCurrentRatio.setText(String.valueOf(k3));
+		this.window.tfTheRatioOfFunds.setText(String.valueOf(k4));
+		this.window.tfProfitability.setText(String.valueOf(k5));
 		
 		logger.trace("Returning from setToWindow(...)");
 	}
@@ -108,13 +110,13 @@ public class Step6LegalController extends AbstractLegalStepController {
 		logger.trace("Calling calcStatus(double s)");
 		
 		if(1 < s && s < 1.05) {
-			status = 1;	
+			this.status = 1;	
 		} else if (s < 2.42) {
-			status = 2;
+			this.status = 2;
 		} else {
-			status = 3;
+			this.status = 3;
 		}
-		logger.debug("status:", status);
+		logger.debug("status:", this.status);
 		
 		logger.trace("Returning from calcStatus(...)");
 	}
@@ -130,7 +132,7 @@ public class Step6LegalController extends AbstractLegalStepController {
 		boolean result = false;
 		double percentCost = calcPercentCost(creditSize, creditRate, creditLength);		
 		double sum = calcSum(creditSize, percentCost);
-		double allNetIncome = calcAllNetIncome(creditProvision, model.getLastCredit().getCosts(), creditLength);
+		double allNetIncome = calcAllNetIncome(creditProvision, this.model.getLastCredit().getCosts(), creditLength);
 		
 		logger.debug("status: ", status);
 		switch (status) {
@@ -145,6 +147,7 @@ public class Step6LegalController extends AbstractLegalStepController {
 				ErrorWindow error = new ErrorWindow("«а " + creditLength + " м≥с€ц≥в кл≥Їнт може выплатити лише " + allNetIncome + " грн. з " + sum + " грн.");
 				error.setVisible(true);
 			}
+			break;
 		case 2:
 			if(creditSize < (allNetIncome * 2.0)) {	
 				logger.debug("creditSize({}) < 2*allNetIncome({})", creditSize, 2.0*allNetIncome);

@@ -32,19 +32,19 @@ public class Step2IndividualController extends AbstractStepController {
 			@Override
 			public void run() {
 				try {
-					Step2IndividualController.this.window = new Step2IndividualWindow();
-					Step2IndividualController.this.window.setVisible(true);
+					window = new Step2IndividualWindow();
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Step2IndividualController.this.window.btnNext.addActionListener(new ActionListener() {
+				window.btnNext.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						if(setToModel(Step2IndividualController.this.model)) {
-							Step2IndividualController.this.window.setVisible(false);
-							Step2IndividualController.this.window.dispose();
-							Step3IndividualController step3 = new Step3IndividualController(Step2IndividualController.this.model);
+						if(setToModel(model)) {
+							window.setVisible(false);
+							window.dispose();
+							Step3IndividualController step3 = new Step3IndividualController(model);
 						step3.init();
 						}
 					}

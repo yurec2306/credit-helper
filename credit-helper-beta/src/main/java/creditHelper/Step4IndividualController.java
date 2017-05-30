@@ -36,20 +36,21 @@ public class Step4IndividualController extends AbstractStepController {
 			@Override
 			public void run() {
 				try {
-					Step4IndividualController.this.window = new Step4IndividualWindow();
-					Step4IndividualController.this.window.setVisible(true);
+					window = new Step4IndividualWindow();
+					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				Step4IndividualController.this.window.btnNext.addActionListener(new ActionListener() {
+				window.btnNext.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						setToModel();
-						checkValidness();
-						Step4IndividualController.this.window.setVisible(false);
-						Step5IndividualController step4 = new Step5IndividualController(Step4IndividualController.this.model);
-						step4.init();
-						Step4IndividualController.this.window.dispose();
+						if(checkValidness()) {
+							window.setVisible(false);
+							Step5IndividualController step4 = new Step5IndividualController(model);
+							step4.init();
+							window.dispose();
+						}
 					}
 				});
 			}
@@ -88,8 +89,10 @@ public class Step4IndividualController extends AbstractStepController {
 		logger.trace("Returning from setToModel()");
 	}
 	
-	private void checkValidness() {
+	private boolean checkValidness() {
 		logger.trace("Calling checkValidness()");
+		
+		boolean result = true;
 		
 		if (this.model.getLastCredit().getCreditType() == CreditType.SHORT_TERM) {
 			logger.trace("CreditType == SHORT_TERM");
@@ -112,9 +115,7 @@ public class Step4IndividualController extends AbstractStepController {
 				
 				ErrorWindow error = new ErrorWindow("За " + this.model.getLastCredit().getCreditLength() + " місяців клієнт може выплатити лише " + allNetIncome + " грн. з " + sum + "грн.");
 				error.setVisible(true);
-				
-				logger.trace("Returning from checkValidness()");
-				return;
+				result = false;
 			}
 			if (this.model.getCreditHistory() == CreditHistory.IS_REPAID_REGULARLY && this.model.getLastCredit().getProvision() < allNetIncome * 2.0) {
 				
@@ -123,9 +124,7 @@ public class Step4IndividualController extends AbstractStepController {
 				
 				ErrorWindow error = new ErrorWindow("Розмір забезпечення (" + this.model.getLastCredit().getProvision() + "грн.) повинен бути більше подвійного чистого доходу (" + allNetIncome * 2.0 + " грн.)");
 				error.setVisible(true);
-				
-				logger.trace("Returning from checkValidness()");
-				return;
+				result = false;
 			}
 		} else {
 			if (this.model.getLastCredit().getCreditType() == CreditType.LONG_TERM_CAR) { //машина
@@ -133,22 +132,19 @@ public class Step4IndividualController extends AbstractStepController {
 				logger.trace("CreditType == LONG_TERM_CAR");
 				
 				if(!calc(this.model, CAR_CREDIT_PERCENT)) {
-					
-					logger.trace("Returning from checkValidness()");
-					return;
+					result = false;
 				}
 			} else { // квартира
 				
 				logger.trace("CreditType == LONG_TERM_HOME");
 				
 				if(!calc(this.model, HOME_CREDIT_PERCENT)) {
-					
-					logger.trace("Returning from checkValidness()");
-					return;
+					result = false;
 				}
 			}
 		}
 		logger.trace("Returning from checkValidness()");
+		return result;
 	}
 	
 	private static boolean calc(IndividualModel model, double downPaymentMinPercent) {

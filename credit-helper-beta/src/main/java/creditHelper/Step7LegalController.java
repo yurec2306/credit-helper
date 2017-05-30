@@ -26,20 +26,22 @@ public class Step7LegalController extends AbstractLegalStepController {
 	public void init() {
 		logger.trace("Calling init()");
 		
-		saveModel(model);
+		saveModel(this.model);
 		
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
-					window = new Step7LegalWindow();
-					window.setVisible(true);
+					Step7LegalController.this.window = new Step7LegalWindow();
+					Step7LegalController.this.window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				window.btnNext.addActionListener(new ActionListener() {
+				Step7LegalController.this.window.btnNext.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						window.setVisible(false);
-						window.dispose();
+						Step7LegalController.this.window.setVisible(false);
+						Step7LegalController.this.window.dispose();
 					}
 				});
 			}

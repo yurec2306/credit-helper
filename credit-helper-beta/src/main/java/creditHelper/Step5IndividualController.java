@@ -22,6 +22,7 @@ public class Step5IndividualController extends AbstractStepController {
 		logger.trace("Creating Step5IndividualController");
 	}
 
+	@Override
 	public void init() {
 		logger.trace("Calling init()");
 		
@@ -30,6 +31,7 @@ public class Step5IndividualController extends AbstractStepController {
 		}
 		
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					window = new Step5IndividualWindow();
@@ -38,6 +40,7 @@ public class Step5IndividualController extends AbstractStepController {
 					e.printStackTrace();
 				}
 				window.btnNext.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						window.setVisible(false);
 						window.dispose();
