@@ -79,7 +79,7 @@ public class IndividualRates extends JFrame {
 		for (int i = 0; i < res.size(); i++) {
 			Object[] obj = new Object[3];
 			obj[0] = i;
-			obj[1] = res.get(i).getLastName() + res.get(i).getFirstName() + res.get(i).getMiddleName();
+			obj[1] = res.get(i).getLastName() +" "+ res.get(i).getFirstName() +" "+ res.get(i).getMiddleName();
 			obj[2] = res.get(i).getRate();
 			objects.add(obj);
 		}
