@@ -20,6 +20,10 @@ import main.IndividualModel.MaritialStatus;
 import main.IndividualModel.Qualification;
 
 public class NetworkHelper {
+	
+	private final static String WEIGHTS_PATH = ".\\src\\main\\resources\\NeuralNetworkSinapsWeights";
+	private final static String DELTA_WEIGHTS_PATH = ".\\src\\main\\resources\\deltaWeights";
+	
 
 	private NeuronLayer[] trainSet;
 	private ArrayList<ArrayList<Float>> answers = new ArrayList<>();
@@ -179,7 +183,7 @@ public class NetworkHelper {
 	}
 	
 	public static float[][][] initNetwork(float[][][] networkWeights) throws FileNotFoundException, IOException, URISyntaxException {
-		File file = new File("NeuralNetworkSinapsWeights");
+		File file = new File(WEIGHTS_PATH);
 		if (file.exists()) {
 			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
 				for (int i = 0; i < networkWeights.length; i++) {
@@ -217,7 +221,7 @@ public class NetworkHelper {
 	}
 
 	public static float[][][] reinitNetwork(float[][][] networkWeights) throws FileNotFoundException, IOException, URISyntaxException {
-		File file = new File("NeuralNetworkSinapsWeights");
+		File file = new File(WEIGHTS_PATH);
 		if(file.exists()) file.delete();
 		file.createNewFile();
 		Random random = new Random();
@@ -240,7 +244,7 @@ public class NetworkHelper {
 	}
 	
 	public static float[][][] saveNetwork(float[][][] networkWeights) throws FileNotFoundException, IOException, URISyntaxException {
-		File file = new File("NeuralNetworkSinapsWeights");
+		File file = new File(WEIGHTS_PATH);
 		if (file.exists()) {
 			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
 				for (int i = 0; i < networkWeights.length; i++) {
@@ -307,7 +311,7 @@ public class NetworkHelper {
 	}
 
 	public static float[][][] initDeltaW(float[][][] deltaw) throws IOException, URISyntaxException {
-		File file = new File("deltaWeights");
+		File file = new File(DELTA_WEIGHTS_PATH);
 		if (file.exists()) {
 			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
 				for (int i = 0; i < deltaw.length; i++) {
@@ -344,7 +348,7 @@ public class NetworkHelper {
 	}
 	
 	public static float[][][] reinitDeltaW(float[][][] deltaw) throws IOException, URISyntaxException {
-		File file = new File("deltaWeights");
+		File file = new File(DELTA_WEIGHTS_PATH);
 		if (file.exists())
 			file.delete();
 		file.createNewFile();
@@ -366,7 +370,7 @@ public class NetworkHelper {
 	}
 	
 	public static float[][][] saveDeltaW(float[][][] deltaw) throws IOException, URISyntaxException {
-		File file = new File("deltaWeights");
+		File file = new File(DELTA_WEIGHTS_PATH);
 		if (file.exists()) {
 			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
 				for (int i = 0; i < deltaw.length; i++) {
