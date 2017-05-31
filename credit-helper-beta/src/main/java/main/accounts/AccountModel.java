@@ -1,6 +1,7 @@
 package main.accounts;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -163,7 +164,7 @@ public class AccountModel implements Serializable {
 		if (this.password == null) {
 			if (other.password != null)
 				return false;
-		} else if (!this.password.equals(other.password))
+		} else if (!Arrays.equals(this.password, other.password))
 			return false;
 		return true;
 	}
@@ -172,7 +173,7 @@ public class AccountModel implements Serializable {
 	public String toString() {
 		return "AccountModel [id=" + this.id + ", firstName=" + this.firstName + ", lastName=" + this.lastName + ", middleName="
 				+ this.middleName + ", phone=" + this.phone + ", bankNumber=" + this.bankNumber + ", login=" + this.login + ", password="
-				+ this.password + ", userType=" + this.userType + ", email=" + this.email + "]";
+				+ Arrays.toString(this.password) + ", userType=" + this.userType + ", email=" + this.email + "]";
 	}	
 	
 }
