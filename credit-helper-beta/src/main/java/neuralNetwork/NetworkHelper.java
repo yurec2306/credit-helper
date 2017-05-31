@@ -278,7 +278,7 @@ public class NetworkHelper {
 				ArrayList<Float> tempList = new ArrayList<>(NeuralNetworkImpl.OUTPUT_LAYER_SIZE);
 				for (int i = 0; i < inputNeurons.size() + NeuralNetworkImpl.OUTPUT_LAYER_SIZE; i++) {
 					if (i < inputNeurons.size()) {
-						inputNeurons.setNeuron(i, new NeuronImpl());
+						inputNeurons.setNeuron(i, new NeuronNoSigmoidImpl());
 						inputNeurons.getNeuron(i).setData(Float.parseFloat(temp[i]));
 					} else {
 						tempList.add(Float.parseFloat(temp[i]));
