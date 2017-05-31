@@ -49,7 +49,7 @@ public class AccountsListController {
 							}
 						) {
 							Class[] columnTypes = new Class[] {
-								Integer.class, AccountModel.class, String.class, Object.class, Object.class
+								Integer.class, String.class, String.class, Object.class, Object.class
 							};
 							@Override
 							public Class getColumnClass(int columnIndex) {
