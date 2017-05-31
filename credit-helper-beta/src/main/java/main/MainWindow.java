@@ -116,7 +116,8 @@ public class MainWindow extends JFrame {
 					IndividualModel model = null;
 					try (IndividualModelDAO dao = new IndividualModelDAO()) {
 						String[] name = MainWindow.this.tfIndividSearch.getText().split(" ");
-						model = dao.getModel(name[0], name[1], name[2]);
+						if(name.length == 3)
+							model = dao.getModel(name[0], name[1], name[2]);
 					}
 					if (model != null) {
 						new IndividualProfileController(model).init();
@@ -157,7 +158,7 @@ public class MainWindow extends JFrame {
 		this.tfLegalSearch.setColumns(10);
 
 		JButton btnAccounts = new JButton(
-				"\u0420\u0430\u0431\u043E\u0442\u0430 \u0437 \u0430\u043A\u0430\u0443\u043D\u0442\u0430\u043C\u0438 \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456");
+				"\u0420\u043E\u0431\u043E\u0442\u0430 \u0437 \u0430\u043A\u0430\u0443\u043D\u0442\u0430\u043C\u0438 \u0443 \u0441\u0438\u0441\u0442\u0435\u043C\u0456");
 		btnAccounts.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
