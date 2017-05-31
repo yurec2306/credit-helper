@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,31 +32,31 @@ public class LoginController {
 			@Override
 			public void run() {
 				try {					
-					LoginController.this.window = new LoginWindow();
-					LoginController.this.window.setVisible(true);
+					window = new LoginWindow();
+					window.setVisible(true);
 				} catch (Exception e) {
 					
 					logger.error(e.getMessage());
 					
 				}
-				LoginController.this.window.lblRegistration.addMouseListener(new MouseAdapter() {
+				window.lblRegistration.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {			
 						new RegistrationController().init();
 					}
 				});
-				LoginController.this.window.btnNext.addActionListener(new ActionListener() {
+				window.btnNext.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						if(checkAccountData(LoginController.this.window.tfLogin.getText(), LoginController.this.window.pfPassword.getPassword())) {
-							LoginController.this.window.setVisible(false);
-							LoginController.this.window.dispose();
-							MainWindow mainWindow = new MainWindow(LoginController.this.model);
+						if(checkAccountData(window.tfLogin.getText(), window.pfPassword.getPassword())) {
+							window.setVisible(false);
+							window.dispose();
+							MainWindow mainWindow = new MainWindow(model);
 							mainWindow.setVisible(true);
 						} else {
-							LoginController.this.window.tfLogin.setText("");
-							LoginController.this.window.pfPassword.setText("");
-							LoginController.this.window.lblError.setVisible(true);
+							window.tfLogin.setText("");
+							window.pfPassword.setText("");
+							window.lblError.setVisible(true);
 						}
 					}
 				});
@@ -75,7 +76,7 @@ public class LoginController {
 			logger.trace("Returning from checkAccountData({}, {})", login, password);
 			return result;
 		}
-		if(this.model.getLogin().equals(login) && String.valueOf(this.model.getPassword()).equals(String.valueOf(password))) {
+		if(this.model.getLogin().equals(login) && Arrays.equals(this.model.getPassword(), password)) {
 			result = true;
 		}
 		logger.debug("result: {}", result);
