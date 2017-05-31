@@ -18,8 +18,6 @@ public class NeuralNetworkImpl implements NeuralNetwork {
 	private final static float LEARN_SPEED = 0.5f; // скорость обучени€ сети
 	private final static float ALPHA = 1f; // момент
 	
-	private static NetworkHelper networkHelper;
-
 	private NeuronLayer[] neuralNetwork; // нейронна€ сеть (матрица нейронов) [нейронный слой]
 	private float[][][] networkWeights; // веса синапсов (св€зей между нейронами) [нейронный слой][индекс в слое][индекс в следующем слое]
 	private float[][] delta; // дельта функции [нейронный слой][индекс в слое]
@@ -29,14 +27,12 @@ public class NeuralNetworkImpl implements NeuralNetwork {
 	private int trainSetsNum; // размер набора последнего обучени€
 	private float errorRate = 1.0f; // веро€тность ошибки (погрешность) 1.0 = 100%
 
-	public NeuralNetworkImpl() {
-		networkHelper = new NetworkHelper();
-	}
-
+	@Override
 	public void reset(NeuronLayer[] trainSet, float[][] answers) throws FileNotFoundException, IOException, URISyntaxException {
 		reinitialize(trainSet);
 	}
 	
+	@Override
 	public void train(NeuronLayer[] trainSet, float[][] answers, int epochs) throws FileNotFoundException, IOException, URISyntaxException {
 		initialize(trainSet);
 		
@@ -47,149 +43,150 @@ public class NeuralNetworkImpl implements NeuralNetwork {
 			// высчитываем результат дл€ каждого набора значений:
 			for (int i = 0; i < trainSet.length; i++) {
 				result = calculate(trainSet[i]);
-				errorRate += countErrorRate(answers[i], result);
+				this.errorRate += countErrorRate(answers[i], result);
 				recalcWeights(answers[i]);
 			}
-			errorRate /= (answers.length * answers[0].length);
+			this.errorRate /= (answers.length * answers[0].length);
 			
-			System.out.println("Ёпоха: " + epochsNum + " ќшибка: " + errorRate);
+			System.out.println("Ёпоха: " + this.epochsNum + " ќшибка: " + this.errorRate);
 			
-			if (errorRate <= 0.005)
+			if (this.errorRate <= 0.005)
 				return;
 			
-			++epochsNum; // +1 к количеству эпох
+			++this.epochsNum; // +1 к количеству эпох
 		}
 		
-		networkHelper.saveNetwork(networkWeights);
-		networkHelper.saveDeltaW(deltaW);
+		NetworkHelper.saveNetwork(this.networkWeights, NetworkHelper.WEIGHTS_PATH);
+		NetworkHelper.saveDeltaW(this.deltaW, NetworkHelper.DELTA_WEIGHTS_PATH);
 	}
 
+	@Override
 	public float[] run(NeuronLayer neuronLayer) throws FileNotFoundException, IOException, URISyntaxException {
 		initialize(neuronLayer);
 		return calculate(neuronLayer);
 	}
 	
-	private void reinitialize(NeuronLayer[] trainSet) throws FileNotFoundException, IOException, URISyntaxException {
-		trainSetsNum = trainSet.length;
+	private void reinitialize(NeuronLayer[] trainSet) throws FileNotFoundException, IOException {
+		this.trainSetsNum = trainSet.length;
 
 		initializeNeuralNetwork(trainSet);
 
 		initializeNetworkWeights();
-		networkWeights = networkHelper.reinitNetwork(networkWeights); // загрузить значени€ весов
+		this.networkWeights = NetworkHelper.reinitNetwork(this.networkWeights, NetworkHelper.WEIGHTS_PATH); // загрузить значени€ весов
 
 		initializeDeltaW();
-		deltaW = networkHelper.reinitDeltaW(deltaW);		
+		this.deltaW = NetworkHelper.reinitDeltaW(this.deltaW, NetworkHelper.DELTA_WEIGHTS_PATH);		
 	}
 
-	private void initialize(NeuronLayer neuronLayer) throws FileNotFoundException, IOException, URISyntaxException {
-		trainSetsNum = 1;
+	private void initialize(NeuronLayer neuronLayer) throws FileNotFoundException, IOException {
+		this.trainSetsNum = 1;
 
 		initializeNeuralNetwork(neuronLayer);
 
 		initializeNetworkWeights();
-		networkWeights = networkHelper.initNetwork(networkWeights); // загрузить значени€ весов
+		this.networkWeights = NetworkHelper.initNetwork(this.networkWeights, NetworkHelper.WEIGHTS_PATH); // загрузить значени€ весов
 	}
 	
-	private void initialize(NeuronLayer[] trainSet) throws FileNotFoundException, IOException, URISyntaxException {
-		trainSetsNum = trainSet.length;
+	private void initialize(NeuronLayer[] trainSet) throws FileNotFoundException, IOException {
+		this.trainSetsNum = trainSet.length;
 
 		initializeNeuralNetwork(trainSet);
 
 		initializeNetworkWeights();
-		networkWeights = networkHelper.initNetwork(networkWeights); // загрузить значени€ весов
+		this.networkWeights = NetworkHelper.initNetwork(this.networkWeights, NetworkHelper.WEIGHTS_PATH); // загрузить значени€ весов
 		
 		initializeDelta();
 		
 		initializeGradient();
 		
 		initializeDeltaW();
-		deltaW = networkHelper.initDeltaW(deltaW);
+		this.deltaW = NetworkHelper.initDeltaW(this.deltaW, NetworkHelper.DELTA_WEIGHTS_PATH);
 	}
 
 	private void initializeNeuralNetwork(NeuronLayer neuronInputLayer) {
-		neuralNetwork = new NeuronLayer[NEURAL_NETWORK_LAYERS];
-		neuralNetwork[0] = new NeuronFirstLayer(neuronInputLayer.size());
-		for (int i = 1; i < neuralNetwork.length; i++) {
-			if (i < neuralNetwork.length - 1) {
-				neuralNetwork[i] = new NeuronHiddenLayer(HIDDEN_LAYER_SIZE);
+		this.neuralNetwork = new NeuronLayer[NEURAL_NETWORK_LAYERS];
+		this.neuralNetwork[0] = new NeuronFirstLayer(neuronInputLayer.size());
+		for (int i = 1; i < this.neuralNetwork.length; i++) {
+			if (i < this.neuralNetwork.length - 1) {
+				this.neuralNetwork[i] = new NeuronHiddenLayer(HIDDEN_LAYER_SIZE);
 			} else {
-				neuralNetwork[i] = new NeuronHiddenLayer(OUTPUT_LAYER_SIZE);
+				this.neuralNetwork[i] = new NeuronHiddenLayer(OUTPUT_LAYER_SIZE);
 			}
 		}
 	}
 	
 	private void initializeNeuralNetwork(NeuronLayer[] trainSet) {
-		neuralNetwork = new NeuronLayer[NEURAL_NETWORK_LAYERS];
-		neuralNetwork[0] = new NeuronHiddenLayer(trainSet[0].size());
-		for (int i = 1; i < neuralNetwork.length; i++) {
-			if (i < neuralNetwork.length - 1) {
-				neuralNetwork[i] = new NeuronHiddenLayer(HIDDEN_LAYER_SIZE);
+		this.neuralNetwork = new NeuronLayer[NEURAL_NETWORK_LAYERS];
+		this.neuralNetwork[0] = new NeuronHiddenLayer(trainSet[0].size());
+		for (int i = 1; i < this.neuralNetwork.length; i++) {
+			if (i < this.neuralNetwork.length - 1) {
+				this.neuralNetwork[i] = new NeuronHiddenLayer(HIDDEN_LAYER_SIZE);
 			} else {
-				neuralNetwork[i] = new NeuronHiddenLayer(OUTPUT_LAYER_SIZE);
+				this.neuralNetwork[i] = new NeuronHiddenLayer(OUTPUT_LAYER_SIZE);
 			}
 		}
 	}
 	
 	private void initializeNetworkWeights() {
-		networkWeights = new float[neuralNetwork.length - 1][][];
-		for (int i = 0; i < networkWeights.length; i++) {
-			if (i < networkWeights.length - 1) {
-				networkWeights[i] = new float[neuralNetwork[i].size() + 1][neuralNetwork[i + 1].size()];
+		this.networkWeights = new float[this.neuralNetwork.length - 1][][];
+		for (int i = 0; i < this.networkWeights.length; i++) {
+			if (i < this.networkWeights.length - 1) {
+				this.networkWeights[i] = new float[this.neuralNetwork[i].size() + 1][this.neuralNetwork[i + 1].size()];
 			} else {
-				networkWeights[i] = new float[neuralNetwork[i].size() + 1][OUTPUT_LAYER_SIZE];
+				this.networkWeights[i] = new float[this.neuralNetwork[i].size() + 1][OUTPUT_LAYER_SIZE];
 			}
 		}
 	}
 	
 	private void initializeDelta() {
-		delta = new float[neuralNetwork.length][];
-		for (int i = 0; i < delta.length; i++) {
-			delta[i] = new float[neuralNetwork[i].size()];
+		this.delta = new float[this.neuralNetwork.length][];
+		for (int i = 0; i < this.delta.length; i++) {
+			this.delta[i] = new float[this.neuralNetwork[i].size()];
 		}
 	}
 
 	private void initializeGradient() {
-		grad = new float[networkWeights.length][][];
-		for (int i = 0; i < grad.length; i++) {
-			grad[i] = new float[networkWeights[i].length][];
-			for (int j = 0; j < grad[i].length; j++) {
-				grad[i][j] = new float[networkWeights[i][j].length];
+		this.grad = new float[this.networkWeights.length][][];
+		for (int i = 0; i < this.grad.length; i++) {
+			this.grad[i] = new float[this.networkWeights[i].length][];
+			for (int j = 0; j < this.grad[i].length; j++) {
+				this.grad[i][j] = new float[this.networkWeights[i][j].length];
 			}
 		}
 	}
 	
 	private void initializeDeltaW() {
-		deltaW = new float[networkWeights.length][][];
-		for (int i = 0; i < deltaW.length; i++) {
-			deltaW[i] = new float[networkWeights[i].length][];
-			for (int j = 0; j < deltaW[i].length; j++) {
-				deltaW[i][j] = new float[networkWeights[i][j].length];
+		this.deltaW = new float[this.networkWeights.length][][];
+		for (int i = 0; i < this.deltaW.length; i++) {
+			this.deltaW[i] = new float[this.networkWeights[i].length][];
+			for (int j = 0; j < this.deltaW[i].length; j++) {
+				this.deltaW[i][j] = new float[this.networkWeights[i][j].length];
 			}
 		}
 	}
 	
-	public float[] calculate(NeuronLayer neuronLayer) throws FileNotFoundException, IOException, URISyntaxException {
-		neuralNetwork[0] = neuronLayer;
+	public float[] calculate(NeuronLayer neuronLayer) throws FileNotFoundException, IOException {
+		this.neuralNetwork[0] = neuronLayer;
 
-		networkWeights = networkHelper.initNetwork(networkWeights);
-		for (int i = 1; i < neuralNetwork.length; i++) {
-			for (int j = 0; j < neuralNetwork[i].size(); j++) {
-				for (int k = 0; k < neuralNetwork[i - 1].size(); k++) {
-					neuralNetwork[i].getNeuron(j).addData(neuralNetwork[i - 1].getNeuron(k).getData() * networkWeights[i - 1][k][j]);
+		this.networkWeights = NetworkHelper.initNetwork(this.networkWeights, NetworkHelper.WEIGHTS_PATH);
+		for (int i = 1; i < this.neuralNetwork.length; i++) {
+			for (int j = 0; j < this.neuralNetwork[i].size(); j++) {
+				for (int k = 0; k < this.neuralNetwork[i - 1].size(); k++) {
+					this.neuralNetwork[i].getNeuron(j).addData(this.neuralNetwork[i - 1].getNeuron(k).getData() * this.networkWeights[i - 1][k][j]);
 				}
-				if(i < neuralNetwork.length - 1) {
-					neuralNetwork[i].getNeuron(j).addData(networkWeights[i - 1][networkWeights[i-1].length-1][j]);
+				if(i < this.neuralNetwork.length - 1) {
+					this.neuralNetwork[i].getNeuron(j).addData(this.networkWeights[i - 1][this.networkWeights[i-1].length-1][j]);
 				}
 			}
 		}
-		float[] results = new float[neuralNetwork[neuralNetwork.length - 1].size()];
+		float[] results = new float[this.neuralNetwork[this.neuralNetwork.length - 1].size()];
 		for(int i = 0; i < results.length; i++) {
-			results[i] = neuralNetwork[neuralNetwork.length - 1].getNeuron(i).getData();
+			results[i] = this.neuralNetwork[this.neuralNetwork.length - 1].getNeuron(i).getData();
 		}
 		return results;
 	}
 
-	private float countErrorRate(float[] answers, float[] result) {
+	private static float countErrorRate(float[] answers, float[] result) {
 		float newErrorRate = 0f; // нова€ погрешность
 		// расчет новой погрешности:
 		for (int j = 0; j < result.length; j++) {
@@ -199,49 +196,52 @@ public class NeuralNetworkImpl implements NeuralNetwork {
 		return newErrorRate;
 	}
 
-	private void recalcWeights(float[] answers) throws FileNotFoundException, IOException, URISyntaxException {
+	private void recalcWeights(float[] answers) {
 		// пересчет весов:
-		for (int i = delta.length - 1; i >= 0; i--) {
-			for (int j = 0; j < delta[i].length; j++) {
-				if (i < delta.length - 1) {
+		for (int i = this.delta.length - 1; i >= 0; i--) {
+			for (int j = 0; j < this.delta[i].length; j++) {
+				if (i < this.delta.length - 1) {
 					float sum = 0;
-					for (int k = 0; k < networkWeights[i][j].length; k++) {
-						sum += networkWeights[i][j][k] * delta[i + 1][k];
+					for (int k = 0; k < this.networkWeights[i][j].length; k++) {
+						sum += this.networkWeights[i][j][k] * this.delta[i + 1][k];
 					}
-					delta[i][j] = ((1 - neuralNetwork[i].getNeuron(j).getData()) * neuralNetwork[i].getNeuron(j).getData()) * sum;
+					this.delta[i][j] = ((1 - this.neuralNetwork[i].getNeuron(j).getData()) * this.neuralNetwork[i].getNeuron(j).getData()) * sum;
 				} else {
-					delta[i][j] = (answers[j] - neuralNetwork[neuralNetwork.length - 1].getNeuron(j).getData()) *
-							((1 - neuralNetwork[neuralNetwork.length - 1].getNeuron(j).getData()) *
-									neuralNetwork[neuralNetwork.length - 1].getNeuron(j).getData());
+					this.delta[i][j] = (answers[j] - this.neuralNetwork[this.neuralNetwork.length - 1].getNeuron(j).getData()) *
+							((1 - this.neuralNetwork[this.neuralNetwork.length - 1].getNeuron(j).getData()) *
+									this.neuralNetwork[this.neuralNetwork.length - 1].getNeuron(j).getData());
 				}
 			}
 		}
 		// градиент:
-		for (int i = 0; i < grad.length; i++) {
-			for (int j = 0; j < grad[i].length; j++) {
-				for (int k = 0; k < grad[i][j].length; k++) {
-					if (j < grad[i].length - 1) {
-						grad[i][j][k] = delta[i + 1][k] * neuralNetwork[i].getNeuron(j).getData();
+		for (int i = 0; i < this.grad.length; i++) {
+			for (int j = 0; j < this.grad[i].length; j++) {
+				for (int k = 0; k < this.grad[i][j].length; k++) {
+					if (j < this.grad[i].length - 1) {
+						this.grad[i][j][k] = this.delta[i + 1][k] * this.neuralNetwork[i].getNeuron(j).getData();
 					} else {
-						grad[i][j][k] = delta[i + 1][k];
+						this.grad[i][j][k] = this.delta[i + 1][k];
 					}
-					deltaW[i][j][k] = LEARN_SPEED * grad[i][j][k] + ALPHA * deltaW[i][j][k];
-					networkWeights[i][j][k] += deltaW[i][j][k];
+					this.deltaW[i][j][k] = LEARN_SPEED * this.grad[i][j][k] + ALPHA * this.deltaW[i][j][k];
+					this.networkWeights[i][j][k] += this.deltaW[i][j][k];
 				}
 			}
 		}
 	}
 
+	@Override
 	public int getEpochsNum() {
-		return epochsNum;
+		return this.epochsNum;
 	}
 
+	@Override
 	public int getTrainSetsNum() {
-		return trainSetsNum;
+		return this.trainSetsNum;
 	}
 
+	@Override
 	public float getError() {
-		return errorRate;
+		return this.errorRate;
 	}
 
 }

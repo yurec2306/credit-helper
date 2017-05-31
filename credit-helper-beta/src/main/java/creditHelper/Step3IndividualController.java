@@ -143,7 +143,7 @@ public class Step3IndividualController extends AbstractStepController {
 		try {
 			result = nn.run(nh.formToNeuron(model));
 		} catch (IOException | URISyntaxException e) {
-			logger.error("Error: {}", e.getMessage());
+			logger.error(e.getMessage());
 		}
 		
 		logger.debug("result: {}", result);
