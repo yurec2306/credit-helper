@@ -249,7 +249,7 @@ public class NetworkHelper {
 		return networkWeights;
 	}
 
-	public static float[][][] saveNetwork(float[][][] networkWeights, String weightsFilepath) throws FileNotFoundException, IOException {
+	public static void saveNetwork(float[][][] networkWeights, String weightsFilepath) throws FileNotFoundException, IOException {
 		File file = new File(weightsFilepath);
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
 			for (int i = 0; i < networkWeights.length; i++) {
@@ -265,7 +265,6 @@ public class NetworkHelper {
 		} catch (IOException e) {
 			throw e;
 		}
-		return networkWeights;
 	}
 
 	public void readTrainSetFromFile(String filepath) throws IOException {
