@@ -47,6 +47,7 @@ public class Step4IndividualController extends AbstractStepController {
 					public void actionPerformed(ActionEvent arg0) {
 						setToModel(window);
 						try {
+							model = calcParams(model);
 							if (checkValidness(model)) {
 								window.setVisible(false);
 								Step5IndividualController step5 = new Step5IndividualController(model);
@@ -64,6 +65,16 @@ public class Step4IndividualController extends AbstractStepController {
 		});
 
 		logger.trace("Returning from init()");
+	}
+	
+	public IndividualModel calcParams(IndividualModel model) {
+		if (model.getLastCredit().getCreditType() == CreditType.SHORT_TERM) {
+			model.getLastCredit().setPercentCost(calcPercentCost(model.getLastCredit().getCreditSize(), model.getLastCredit().getCreditRate(), model.getLastCredit().getCreditLength()));
+		} else {
+			model.getLastCredit().setPercentCost(calcPercentCost(model.getLastCredit().getCreditSize(), model.getLastCredit().getDownPayment(), model.getLastCredit().getCreditRate(), model.getLastCredit().getCreditLength()));	
+		}
+		model.getLastCredit().setNetIncome(calcNetIncome(model.getMonthlyIncome()));
+		return model;
 	}
 
 	public void setToModel(Step4IndividualWindow window) {
@@ -96,63 +107,36 @@ public class Step4IndividualController extends AbstractStepController {
 		logger.trace("Returning from setToModel({})", window);
 	}
 
-	public static boolean checkValidness(IndividualModel model) throws IllegalArgumentException {
+	public boolean checkValidness(IndividualModel model) throws IllegalArgumentException {
 		logger.trace("Calling checkValidness({})", model);
 
 		double creditSize = model.getLastCredit().getCreditSize();
-		double creditRate = model.getLastCredit().getCreditRate();
 		double creditLength = model.getLastCredit().getCreditLength();
 		double provision = model.getLastCredit().getProvision();
-		double monthlyIncome = model.getMonthlyIncome();
 		CreditHistory creditHistory = model.getCreditHistory();
 		CreditType creditType = model.getLastCredit().getCreditType();
-
+		double percentCost = model.getLastCredit().getPercentCost();
+		double netIncome = model.getLastCredit().getNetIncome();
+		
 		boolean result = true;
 
 		if (creditType == CreditType.SHORT_TERM) {
 			logger.trace("CreditType == SHORT_TERM");
 
-			double percentCost = creditSize * creditRate * (creditLength + 1.0) / 24.0;
-			logger.debug("percentCost: {}", percentCost);
-
-			double sum = creditSize + percentCost;
-			logger.debug("sum: {}", sum);
-
-			double netIncome = monthlyIncome * 0.4; // чистый доход
-			logger.debug("netIncome: {}", netIncome);
-
-			double allNetIncome = netIncome * creditLength; // чистый доход за
-															// весь период
-			logger.debug("allNetIncome: {}", allNetIncome);
-
-			if (allNetIncome < sum) {
-
-				logger.debug("allNetIncome({}) < sum({})", allNetIncome, sum);
-
-				throw new IllegalArgumentException("За " + creditLength + " місяців клієнт може выплатити лише "
-						+ allNetIncome + " грн. з " + sum + "грн.");
-			}
-			if (creditHistory == CreditHistory.IS_REPAID_REGULARLY && provision < (allNetIncome * 2.0)) {
-
-				logger.trace("CreditHistory == IS_REPAID_REGULARLY");
-				logger.debug("provision({}) < 2*allNetIncome({})", provision, (allNetIncome * 2.0));
-
-				throw new IllegalArgumentException("Розмір забезпечення (" + provision
-						+ "грн.) повинен бути більше подвійного чистого доходу (" + allNetIncome * 2.0 + " грн.)");
-			}
+			checkValidnessShortTermCredit(creditSize, creditLength, provision, creditHistory, percentCost, netIncome);
 		} else {
 			if (creditType == CreditType.LONG_TERM_CAR) { // машина
 
 				logger.trace("CreditType == LONG_TERM_CAR");
 
-				if (!calc(model.getLastCredit(), CAR_CREDIT_PERCENT)) {
+				if (!checkValidnessLongTermCredit(model.getLastCredit(), CAR_CREDIT_PERCENT)) {
 					result = false;
 				}
 			} else { // квартира
 
 				logger.trace("CreditType == LONG_TERM_HOME");
 
-				if (!calc(model.getLastCredit(), HOME_CREDIT_PERCENT)) {
+				if (!checkValidnessLongTermCredit(model.getLastCredit(), HOME_CREDIT_PERCENT)) {
 					result = false;
 				}
 			}
@@ -161,35 +145,87 @@ public class Step4IndividualController extends AbstractStepController {
 		return result;
 	}
 
-	private static boolean calc(CreditModel credit, double downPaymentMinPercent) throws IllegalArgumentException {
+	public void checkValidnessShortTermCredit(double creditSize, double creditLength, double provision, CreditHistory creditHistory, double percentCost, double netIncome) {
+		double sum = calcSum(creditSize, percentCost);
+		double allNetIncome = calcAllNetIncome(creditLength, netIncome);
+
+		if (allNetIncome < sum) {
+
+			logger.debug("allNetIncome({}) < sum({})", allNetIncome, sum);
+
+			throw new IllegalArgumentException("За " + creditLength + " місяців клієнт може выплатити лише "
+					+ allNetIncome + " грн. з " + sum + "грн.");
+		}
+		if (creditHistory == CreditHistory.IS_REPAID_REGULARLY && provision < (allNetIncome * 2.0)) {
+
+			logger.trace("CreditHistory == IS_REPAID_REGULARLY");
+			logger.debug("provision({}) < 2*allNetIncome({})", provision, (allNetIncome * 2.0));
+
+			throw new IllegalArgumentException("Розмір забезпечення (" + provision
+					+ "грн.) повинен бути більше подвійного чистого доходу (" + allNetIncome * 2.0 + " грн.)");
+		}
+	}
+
+	public double calcAllNetIncome(double creditLength, double netIncome) {
+		double allNetIncome = netIncome * creditLength; // чистый доход за весь период
+		logger.debug("allNetIncome: {}", allNetIncome);
+		return allNetIncome;
+	}
+
+	public double calcNetIncome(double monthlyIncome) {
+		double netIncome = monthlyIncome * 0.4; // чистый доход
+		logger.debug("netIncome: {}", netIncome);
+		return netIncome;
+	}
+
+	public double calcSum(double creditSize, double percentCost) {
+		double sum = creditSize + percentCost;
+		logger.debug("sum: {}", sum);
+		return sum;
+	}
+
+	public double calcPercentCost(double creditSize, double creditRate, double creditLength) {
+		double percentCost = creditSize * creditRate * (creditLength + 1.0) / 24.0;
+		logger.debug("percentCost: {}", percentCost);
+		return percentCost;
+	}
+	
+	public double calcPercentCost(double creditSize, double downPayment, double creditRate, double creditLength) {
+		double percentCost = (creditSize - downPayment) * creditRate * (creditLength + 1.0) / 24.0;
+		logger.debug("percentCost: {}", percentCost);
+		return percentCost;
+	}
+
+	public boolean checkValidnessLongTermCredit(CreditModel credit, double downPaymentMinPercent) throws IllegalArgumentException {
 		logger.trace("Calling from calc({}, {})", credit, downPaymentMinPercent);
 
 		boolean result = true;
 		if (credit.getDownPayment() < credit.getCreditSize() * downPaymentMinPercent) {
 
-			logger.debug("downPayment({}) < creditSize * downPaymentMinPercent({})", credit.getDownPayment(),
+			logger.debug("downPayment({}) < (creditSize * downPaymentMinPercent)({})", credit.getDownPayment(),
 					(credit.getCreditSize() * downPaymentMinPercent));
 
-			throw new IllegalArgumentException("Розмір першого взносу (" + credit.getDownPayment()
-					+ " грн.) повинен складати 10% від розміру кредиту (" + credit.getCreditSize() + " грн.)");
+			throw new IllegalArgumentException("Розмір першого взносу (" + credit.getDownPayment() + " грн.)"
+					+ " повинен складати 10% від розміру кредиту (" + credit.getCreditSize() + " грн.)");
 		}
-		double percentCost = (credit.getCreditSize() - credit.getDownPayment()) * credit.getCreditRate()
-				* (credit.getCreditLength() + 1.0) / 24.0;
-		logger.debug("percentCost: {}", percentCost);
 
-		double sum = credit.getCreditSize() + percentCost;
+		double sum = calcSum(credit.getCreditSize(), credit.getPercentCost());
 		logger.debug("sum: {}", sum);
+		
+		double sumNetIncome = sum / credit.getCreditLength();
 
-		if (sum < credit.getNetIncome()) {
+		if (sumNetIncome < credit.getNetIncome()) {
 
-			logger.debug("sum < netIncome");
+			logger.debug("netIncome < netIncome");
 
-			throw new IllegalArgumentException("Розмір чистого доходу на місяць (" + credit.getDownPayment()
-					+ " грн.) повинен дорівнювати або бути більше суми повернення (" + sum + " грн.)");
+			throw new IllegalArgumentException("Розмір чистого доходу на місяць (" + credit.getNetIncome() + " грн.)"
+					+ " повинен дорівнювати або бути більше щомісячної суми повернення (" +  sumNetIncome + " грн.)");
 		}
+		
 		logger.debug("result: {}", result);
 
 		logger.trace("Returning from calc({}, {})", credit, downPaymentMinPercent);
 		return result;
 	}
+
 }
