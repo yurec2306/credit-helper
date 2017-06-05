@@ -32,10 +32,12 @@ public class NetworkHelper {
 	private ArrayList<ArrayList<Float>> answers = new ArrayList<>();
 
 	public static NeuronInputLayer formToNeuron(IndividualModel model) {
-		Neuron[] neuron = new NeuronImpl[NeuralNetworkImpl.INPUT_LAYER_SIZE];
-		for (int i = 0; i < neuron.length; i++) {
+		Neuron[] neuron = new Neuron[NeuralNetworkImpl.INPUT_LAYER_SIZE + 1];
+		for (int i = 0; i < neuron.length - 1; i++) {
 			neuron[i] = new NeuronNoSigmoidImpl();
 		}	
+		neuron[neuron.length - 1] = new NeuronBiasImpl();
+		
 		neuron[0].setData(convertAge(model.getAge()));
 		neuron[1].setData(convertMaritialStatus(model.getMaritialStatus()));
 		neuron[2].setData(convertChildrenNum(model.getChildrenNum()));
