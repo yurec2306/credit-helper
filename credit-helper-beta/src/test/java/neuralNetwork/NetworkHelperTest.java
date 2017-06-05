@@ -86,13 +86,19 @@ public class NetworkHelperTest {
 				assertArrayEquals(expected[i][j], testWeight[i][j], 0);
 	}
 	
-	@Test(expected = FileNotFoundException.class)
-	public void saveNetwork_correctArrayAndFileNotExist_throwsFileNotFoundException() throws FileNotFoundException, IOException {
+	@Test
+	public void saveNetwork_correctArrayAndFileNotExist_dataSavedToFile() throws IOException {
 		File file = new File(WEIGHTS_PATH);
 		if (file.exists()) file.delete();
 		float[][][] testWeight = {{{1}}};
-
+		float[][][] expected = {{{1}}};
+		
 		NetworkHelper.saveNetwork(testWeight, WEIGHTS_PATH);
+		
+		testWeight = NetworkHelper.initNetwork(testWeight, WEIGHTS_PATH);
+		for (int i = 0; i < expected.length; i++)
+			for (int j = 0; j < expected.length; j++)
+				assertArrayEquals(expected[i][j], testWeight[i][j], 0);
 	}
 	
 	@Test
