@@ -18,7 +18,7 @@ public class NeuronNoSigmoidImpl implements Neuron {
 	
 	@Override
 	public float getData() {
-		return inputData;
+		return this.inputData;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class NeuronNoSigmoidImpl implements Neuron {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Float.floatToIntBits(inputData);
+		result = prime * result + Float.floatToIntBits(this.inputData);
 		return result;
 	}
 
@@ -45,14 +45,14 @@ public class NeuronNoSigmoidImpl implements Neuron {
 		if (!(obj instanceof NeuronNoSigmoidImpl))
 			return false;
 		NeuronNoSigmoidImpl other = (NeuronNoSigmoidImpl) obj;
-		if (Float.floatToIntBits(inputData) != Float.floatToIntBits(other.inputData))
+		if (Float.floatToIntBits(this.inputData) != Float.floatToIntBits(other.inputData))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return ""+inputData;
+		return ""+this.inputData;
 	}
 
 }

@@ -139,9 +139,8 @@ public class Step3IndividualController extends AbstractStepController {
 		
 		float[] result = null;
 		NeuralNetwork nn = new NeuralNetworkImpl();
-		NetworkHelper nh = new NetworkHelper();
 		try {
-			result = nn.run(nh.formToNeuron(model));
+			result = nn.run(NetworkHelper.formToNeuron(model));
 		} catch (IOException | URISyntaxException e) {
 			logger.error(e.getMessage());
 		}

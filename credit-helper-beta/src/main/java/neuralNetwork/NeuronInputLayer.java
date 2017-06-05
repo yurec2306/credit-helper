@@ -2,28 +2,32 @@ package neuralNetwork;
 
 import java.util.Arrays;
 
-public class NeuronHiddenLayer implements NeuronLayer {
-	
+public class NeuronInputLayer implements NeuronLayer {
+
 	private Neuron[] layer;
-	
-	public NeuronHiddenLayer(int neurons) {
+
+	public NeuronInputLayer(int neurons) {
 		this.layer = new Neuron[neurons + 1];
-		for(int i = 0; i < this.layer.length - 1; i++) {
-			this.layer[i] = new NeuronImpl();
+		for (int i = 0; i < this.layer.length - 1; i++) {
+			this.layer[i] = new NeuronNoSigmoidImpl();
 		}
 		this.layer[this.layer.length - 1] = new NeuronBiasImpl();
 	}
-	
+
+	public NeuronInputLayer(Neuron[] neurons) {
+		this.layer = neurons;
+	}
+
 	@Override
 	public Neuron getNeuron(int index) {
 		return this.layer[index];
 	}
-	
+
 	@Override
 	public void setNeuron(int index, Neuron neuron) {
 		this.layer[index] = neuron;
 	}
-	
+
 	@Override
 	public int size() {
 		return this.layer.length;
@@ -47,9 +51,9 @@ public class NeuronHiddenLayer implements NeuronLayer {
 			return true;
 		if (obj == null)
 			return false;
-		if (!(obj instanceof NeuronHiddenLayer))
+		if (!(obj instanceof NeuronInputLayer))
 			return false;
-		NeuronHiddenLayer other = (NeuronHiddenLayer) obj;
+		NeuronInputLayer other = (NeuronInputLayer) obj;
 		if (!Arrays.equals(this.layer, other.layer))
 			return false;
 		return true;
@@ -59,5 +63,5 @@ public class NeuronHiddenLayer implements NeuronLayer {
 	public String toString() {
 		return "[" + Arrays.toString(this.layer) + "]";
 	}
-	
+
 }

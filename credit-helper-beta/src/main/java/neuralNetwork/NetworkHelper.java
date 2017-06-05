@@ -28,14 +28,14 @@ public class NetworkHelper {
 	public final static String WEIGHTS_PATH = ".\\src\\main\\resources\\NeuralNetworkSinapsWeights";
 	public final static String DELTA_WEIGHTS_PATH = ".\\src\\main\\resources\\deltaWeights";
 
-	private NeuronLayer[] trainSet;
+	private NeuronInputLayer[] trainSet;
 	private ArrayList<ArrayList<Float>> answers = new ArrayList<>();
 
-	public NeuronFirstLayer formToNeuron(IndividualModel model) {
-		Neuron[] neuron = new NeuronNoSigmoidImpl[NeuralNetworkImpl.INPUT_LAYER_SIZE];
+	public static NeuronInputLayer formToNeuron(IndividualModel model) {
+		Neuron[] neuron = new NeuronImpl[NeuralNetworkImpl.INPUT_LAYER_SIZE];
 		for (int i = 0; i < neuron.length; i++) {
 			neuron[i] = new NeuronNoSigmoidImpl();
-		}
+		}	
 		neuron[0].setData(convertAge(model.getAge()));
 		neuron[1].setData(convertMaritialStatus(model.getMaritialStatus()));
 		neuron[2].setData(convertChildrenNum(model.getChildrenNum()));
@@ -43,7 +43,7 @@ public class NetworkHelper {
 		neuron[4].setData(convertQualification(model.getQualification()));
 		neuron[5].setData(convertWorkExperience(model.getYearsOfWorkExperience()));
 		neuron[6].setData(convertIncome(model.getMonthlyIncome()));
-		return new NeuronFirstLayer(neuron);
+		return new NeuronInputLayer(neuron);
 	}
 
 	private static float convertAge(int age) {
@@ -273,13 +273,12 @@ public class NetworkHelper {
 		try (BufferedReader in = new BufferedReader(new FileReader(file))) {
 			String line;
 			while ((line = in.readLine()) != null) {
-				NeuronFirstLayer inputNeurons = new NeuronFirstLayer(NeuralNetworkImpl.INPUT_LAYER_SIZE);
+				NeuronInputLayer inputNeurons = new NeuronInputLayer(NeuralNetworkImpl.INPUT_LAYER_SIZE);
 				String[] temp = line.split(" ");
 				ArrayList<Float> tempList = new ArrayList<>(NeuralNetworkImpl.OUTPUT_LAYER_SIZE);
-				for (int i = 0; i < inputNeurons.size() + NeuralNetworkImpl.OUTPUT_LAYER_SIZE; i++) {
-					if (i < inputNeurons.size()) {
-						inputNeurons.setNeuron(i, new NeuronNoSigmoidImpl());
-						inputNeurons.getNeuron(i).setData(Float.parseFloat(temp[i]));
+				for (int i = 0; i < inputNeurons.dataSize() + NeuralNetworkImpl.OUTPUT_LAYER_SIZE; i++) {
+					if (i < inputNeurons.dataSize()) {
+						inputNeurons.setNeuron(i, new NeuronNoSigmoidImpl(Float.parseFloat(temp[i])));
 					} else {
 						tempList.add(Float.parseFloat(temp[i]));
 					}
@@ -290,10 +289,10 @@ public class NetworkHelper {
 		} catch (IOException e) {
 			throw e;
 		}
-		this.trainSet = trainSet.toArray(new NeuronFirstLayer[trainSet.size()]);
+		this.trainSet = trainSet.toArray(new NeuronInputLayer[trainSet.size()]);
 	}
 
-	public NeuronLayer[] getTrainSet() {
+	public NeuronInputLayer[] getTrainSet() {
 		return this.trainSet;
 	}
 
