@@ -31,7 +31,7 @@ public class AccountModel implements Serializable {
 	@Column(name = "phone")
 	private String phone;
 	
-	@Column(name = "bunk_number")
+	@Column(name = "bank_number")
 	private String bankNumber;
 	
 	@Column(name = "login")
