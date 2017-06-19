@@ -15,10 +15,11 @@ public class Step7LegalController extends AbstractLegalStepController {
 	private static Logger logger = LoggerFactory.getLogger(Step7LegalController.class);
 
 	private Step7LegalWindow window;
+	private final int status;
 	
-	public Step7LegalController(LegalModel model) {
+	public Step7LegalController(LegalModel model, int status) {
 		super(model);
-		
+		this.status = status;		
 		logger.trace("Creating Step7LegalController");
 	}
 
@@ -33,6 +34,7 @@ public class Step7LegalController extends AbstractLegalStepController {
 			public void run() {
 				try {
 					window = new Step7LegalWindow();
+					window.lblResult.setText(window.lblResult.getText() + "\nКлас кредитоспроможності: " + status);
 					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -47,7 +47,7 @@ public class Step6LegalController extends AbstractLegalStepController {
 					public void actionPerformed(ActionEvent arg0) {
 						if (isCreditReady(model, status)) {
 							window.setVisible(false);
-							Step7LegalController step7 = new Step7LegalController(model);
+							Step7LegalController step7 = new Step7LegalController(model, status);
 							step7.init();
 							window.dispose();
 						}
